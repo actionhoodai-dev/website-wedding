@@ -276,12 +276,16 @@ export default function WeddingExperience() {
 
   // ─── Video end handler ─────────────
   const handleVideoEnd = useCallback(() => {
+    if (videoEnded) return;
     setVideoEnded(true);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('wedding-play-audio'));
-    }
+    // Exactly 1 second after opening video ends, start music synchronously
+    setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('wedding-play-audio'));
+      }
+    }, 1000);
     setTimeout(() => setVideoFadeDone(true), 1400);
-  }, []);
+  }, [videoEnded]);
 
   // Safety fallback: ensure page reveals even if browser blocks autoplay or video fails
   useEffect(() => {

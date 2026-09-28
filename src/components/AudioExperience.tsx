@@ -3,14 +3,17 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
 export function AudioExperience() {
+  // By default, music is intended to play automatically (not muted)
+  const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const userMutedRef = useRef(false);
 
-  // Play audio safely handling browser autoplay policies
+  // Play audio safely
   const playAudio = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || userMutedRef.current) return;
 
     audio.muted = false;
     const playPromise = audio.play();
@@ -18,33 +21,37 @@ export function AudioExperience() {
       playPromise
         .then(() => {
           setIsPlaying(true);
+          setIsMuted(false);
         })
         .catch(() => {
-          // Autoplay blocked by browser until user gesture
-          setIsPlaying(false);
+          // Autoplay blocked until gesture; keep state ready
         });
     }
   }, []);
 
-  // Pause/Mute audio
+  // Mute / pause audio
   const pauseAudio = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.pause();
     setIsPlaying(false);
+    setIsMuted(true);
   }, []);
 
   // Cute speaker button toggle (mute / unmute)
   const handleToggle = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
-      if (isPlaying) {
+      if (!isMuted && isPlaying) {
+        userMutedRef.current = true;
         pauseAudio();
       } else {
+        userMutedRef.current = false;
+        setIsMuted(false);
         playAudio();
       }
     },
-    [isPlaying, pauseAudio, playAudio]
+    [isMuted, isPlaying, pauseAudio, playAudio]
   );
 
   useEffect(() => {
@@ -52,90 +59,110 @@ export function AudioExperience() {
     const audio = new Audio('/final-web-song.mp3');
     audio.loop = true;
     audio.preload = 'auto';
-    audio.volume = 0.75;
+    audio.volume = 0.8;
     audioRef.current = audio;
 
     audio.addEventListener('error', () => {
       if (audio.src.includes('final-web-song.mp3')) {
-        // Fallback to secondary track
         audio.src = '/audio.mp3';
         audio.load();
-        audio.play().then(() => setIsPlaying(true)).catch(() => {});
-      } else {
-        setHasError(true);
+        if (!userMutedRef.current) {
+          audio.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
       }
     });
 
-    audio.addEventListener('play', () => setIsPlaying(true));
-    audio.addEventListener('pause', () => setIsPlaying(false));
+    audio.addEventListener('play', () => {
+      setIsPlaying(true);
+      setIsMuted(false);
+    });
 
-    // Attempt audio playback immediately or on first user interaction
-    const startAudio = () => {
-      if (!audioRef.current) return;
+    audio.addEventListener('pause', () => {
+      if (userMutedRef.current) {
+        setIsPlaying(false);
+        setIsMuted(true);
+      }
+    });
+
+    // Helper to start playback on interaction if not muted
+    const tryStartAudio = () => {
+      if (userMutedRef.current || !audioRef.current) return;
       audioRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
-          cleanupGestureListeners();
+          setIsMuted(false);
         })
-        .catch(() => {
-          // Waiting for user gesture
-        });
+        .catch(() => {});
     };
 
-    const cleanupGestureListeners = () => {
-      window.removeEventListener('pointerdown', startAudio);
-      window.removeEventListener('click', startAudio);
-      window.removeEventListener('touchstart', startAudio);
-      window.removeEventListener('touchend', startAudio);
-      window.removeEventListener('scroll', startAudio);
-      window.removeEventListener('keydown', startAudio);
+    // Synchronized event: fired 1 second after opening video ends
+    const handleSynchronizedPlay = () => {
+      setIsVisible(true);
+      if (!userMutedRef.current && audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            setIsMuted(false);
+          })
+          .catch(() => {
+            // If browser requires gesture, try on next interaction
+            tryStartAudio();
+          });
+      }
     };
 
-    // Attempt immediate autoplay on load
-    startAudio();
+    // Unlock audio element early on user interaction
+    const handleUnlock = () => {
+      setIsVisible(true);
+      if (!userMutedRef.current) {
+        tryStartAudio();
+      }
+    };
 
-    // Register user gesture listeners for seamless auto-start on first touch/click/scroll
-    window.addEventListener('pointerdown', startAudio, { passive: true });
-    window.addEventListener('click', startAudio, { passive: true });
-    window.addEventListener('touchstart', startAudio, { passive: true });
-    window.addEventListener('touchend', startAudio, { passive: true });
-    window.addEventListener('scroll', startAudio, { passive: true, once: true });
-    window.addEventListener('keydown', startAudio, { passive: true });
-
-    // Custom programmatic event to trigger audio
-    const handleGlobalPlay = () => startAudio();
-    window.addEventListener('wedding-play-audio', handleGlobalPlay);
+    window.addEventListener('wedding-play-audio', handleSynchronizedPlay);
+    window.addEventListener('pointerdown', handleUnlock, { passive: true });
+    window.addEventListener('click', handleUnlock, { passive: true });
+    window.addEventListener('touchstart', handleUnlock, { passive: true });
+    window.addEventListener('scroll', handleUnlock, { passive: true, once: true });
+    window.addEventListener('keydown', handleUnlock, { passive: true });
 
     return () => {
-      cleanupGestureListeners();
-      window.removeEventListener('wedding-play-audio', handleGlobalPlay);
+      window.removeEventListener('wedding-play-audio', handleSynchronizedPlay);
+      window.removeEventListener('pointerdown', handleUnlock);
+      window.removeEventListener('click', handleUnlock);
+      window.removeEventListener('touchstart', handleUnlock);
+      window.removeEventListener('scroll', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
       audio.pause();
       audio.src = '';
     };
   }, []);
-
-  if (hasError) return null;
 
   return (
     <div
       style={{
         position: 'fixed',
         bottom: 'calc(1.2rem + env(safe-area-inset-bottom, 0px))',
-        right: 'calc(1.2rem + env(safe-area-inset-right, 0px))',
+        left: 'calc(1.2rem + env(safe-area-inset-left, 0px))',
         zIndex: 1000,
         pointerEvents: 'auto',
+        opacity: isVisible ? 1 : 0.85,
+        transition: 'opacity 0.5s ease',
       }}
     >
       <button
+        type="button"
         onClick={handleToggle}
-        aria-label={isPlaying ? 'Mute wedding music' : 'Play wedding music'}
-        title={isPlaying ? 'Mute music' : 'Play music'}
-        className={`cute-speaker-btn ${isPlaying ? 'playing' : 'muted'}`}
+        aria-label={isMuted ? 'Unmute wedding music' : 'Mute wedding music'}
+        title={isMuted ? 'Click to play music' : 'Click to mute music'}
+        className={`cute-speaker-btn ${!isMuted ? 'playing' : 'muted'}`}
       >
         {/* Cute Speaker Icon */}
         <div className="speaker-icon-wrap">
-          {isPlaying ? (
+          {!isMuted ? (
             <svg
               width="20"
               height="20"
@@ -195,7 +222,7 @@ export function AudioExperience() {
         }
 
         .cute-speaker-btn.playing {
-          background: linear-gradient(135deg, rgba(65, 12, 22, 0.94) 0%, rgba(95, 20, 32, 0.94) 100%);
+          background: linear-gradient(135deg, rgba(65, 12, 22, 0.95) 0%, rgba(95, 20, 32, 0.95) 100%);
           border-color: rgba(255, 224, 130, 0.85);
           box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 14px rgba(212, 175, 55, 0.4);
           animation: cuteSpeakerPulse 3s infinite ease-in-out;
