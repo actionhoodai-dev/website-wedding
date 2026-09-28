@@ -60,6 +60,7 @@ export function AudioExperience() {
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0.8;
+    audio.load();
     audioRef.current = audio;
 
     audio.addEventListener('error', () => {
@@ -87,6 +88,12 @@ export function AudioExperience() {
     // Helper to start playback on interaction if not muted
     const tryStartAudio = () => {
       if (userMutedRef.current || !audioRef.current) return;
+      // If already playing, do not interrupt
+      if (!audioRef.current.paused) {
+        setIsPlaying(true);
+        setIsMuted(false);
+        return;
+      }
       audioRef.current
         .play()
         .then(() => {
@@ -96,11 +103,18 @@ export function AudioExperience() {
         .catch(() => {});
     };
 
-    // Synchronized event: fired 1 second after opening video ends
+    // Synchronized event: fired when opening video ends
     const handleSynchronizedPlay = () => {
       setIsVisible(true);
       if (!userMutedRef.current && audioRef.current) {
-        audioRef.current.currentTime = 0;
+        // If audio is ALREADY playing (e.g. from user gesture/tap), let it continue uninterrupted!
+        if (!audioRef.current.paused) {
+          setIsPlaying(true);
+          setIsMuted(false);
+          return;
+        }
+
+        // Only start if not already playing
         audioRef.current
           .play()
           .then(() => {
@@ -108,7 +122,6 @@ export function AudioExperience() {
             setIsMuted(false);
           })
           .catch(() => {
-            // If browser requires gesture, try on next interaction
             tryStartAudio();
           });
       }

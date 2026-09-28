@@ -278,12 +278,10 @@ export default function WeddingExperience() {
   const handleVideoEnd = useCallback(() => {
     if (videoEnded) return;
     setVideoEnded(true);
-    // Exactly 1 second after opening video ends, start music synchronously
-    setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('wedding-play-audio'));
-      }
-    }, 1000);
+    // Play audio immediately right when the opening video completes / fades out
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wedding-play-audio'));
+    }
     setTimeout(() => setVideoFadeDone(true), 1400);
   }, [videoEnded]);
 
