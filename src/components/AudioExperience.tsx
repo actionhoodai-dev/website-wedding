@@ -73,9 +73,20 @@ export function AudioExperience() {
       }
     });
 
+    const cleanupGestureListeners = () => {
+      window.removeEventListener('pointerdown', handleUnlock);
+      window.removeEventListener('click', handleUnlock);
+      window.removeEventListener('touchstart', handleUnlock);
+      window.removeEventListener('touchmove', handleUnlock);
+      window.removeEventListener('scroll', handleUnlock);
+      window.removeEventListener('wheel', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
+    };
+
     audio.addEventListener('play', () => {
       setIsPlaying(true);
       setIsMuted(false);
+      cleanupGestureListeners();
     });
 
     audio.addEventListener('pause', () => {
@@ -99,6 +110,7 @@ export function AudioExperience() {
         .then(() => {
           setIsPlaying(true);
           setIsMuted(false);
+          cleanupGestureListeners();
         })
         .catch(() => {});
     };
@@ -120,6 +132,7 @@ export function AudioExperience() {
           .then(() => {
             setIsPlaying(true);
             setIsMuted(false);
+            cleanupGestureListeners();
           })
           .catch(() => {
             tryStartAudio();
@@ -127,28 +140,26 @@ export function AudioExperience() {
       }
     };
 
-    // Unlock audio element early on user interaction
-    const handleUnlock = () => {
+    // Unlock audio element early on any user interaction (tap, scroll, wheel, touch)
+    function handleUnlock() {
       setIsVisible(true);
       if (!userMutedRef.current) {
         tryStartAudio();
       }
-    };
+    }
 
     window.addEventListener('wedding-play-audio', handleSynchronizedPlay);
     window.addEventListener('pointerdown', handleUnlock, { passive: true });
     window.addEventListener('click', handleUnlock, { passive: true });
     window.addEventListener('touchstart', handleUnlock, { passive: true });
-    window.addEventListener('scroll', handleUnlock, { passive: true, once: true });
+    window.addEventListener('touchmove', handleUnlock, { passive: true });
+    window.addEventListener('scroll', handleUnlock, { passive: true });
+    window.addEventListener('wheel', handleUnlock, { passive: true });
     window.addEventListener('keydown', handleUnlock, { passive: true });
 
     return () => {
+      cleanupGestureListeners();
       window.removeEventListener('wedding-play-audio', handleSynchronizedPlay);
-      window.removeEventListener('pointerdown', handleUnlock);
-      window.removeEventListener('click', handleUnlock);
-      window.removeEventListener('touchstart', handleUnlock);
-      window.removeEventListener('scroll', handleUnlock);
-      window.removeEventListener('keydown', handleUnlock);
       audio.pause();
       audio.src = '';
     };
