@@ -1,13 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import Image from 'next/image';
 import { WEDDING_CONFIG } from '@/config/wedding';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { AudioExperience } from '@/components/AudioExperience';
-import { ScratchDateReveal } from '@/components/ScratchDateReveal';
-import { CoupleSilhouette } from '@/components/CoupleSilhouette';
-import { TimelineAirplane } from '@/components/TimelineAirplane';
+import { PhysicalScratchCard } from '@/components/PhysicalScratchCard';
+import { CinematicJourney } from '@/components/CinematicJourney';
+import { CeremonialGallery } from '@/components/CeremonialGallery';
 import { GoldenParticles } from '@/components/GoldenParticles';
+
+const GALLERY_ITEMS = [
+  { id: 1, src: '/couple/temple-view.jpg', alt: 'Rajha Mukhilan & Swetha at Meenakshi Amman Temple' },
+  { id: 2, src: '/gallery/photo-2.jpg', alt: 'Sacred Temple Architecture & Heritage' },
+  { id: 3, src: '/couple/portrait.jpg', alt: 'Cherished Portrait of Love' },
+  { id: 4, src: '/gallery/photo-4.jpg', alt: 'Festive Floral Wedding Decor' },
+  { id: 5, src: '/gallery/reception-namakkal.jpg', alt: 'Royal Reception Ambiance' },
+  { id: 6, src: '/gallery/photo-5.jpg', alt: 'Traditions and Auspicious Blessings' },
+];
 
 /* ============================================================
    UTILITY — Countdown Hook
@@ -179,6 +189,7 @@ function EventChapter({
   venueCity,
   mapUrl,
   bgImage,
+  sectionClass = 'event-section--wedding',
 }: {
   id: string;
   title: string;
@@ -191,11 +202,12 @@ function EventChapter({
   venueCity: string;
   mapUrl?: string;
   bgImage?: string;
+  sectionClass?: string;
 }) {
   return (
     <section
       id={id}
-      className="event-section event-section--photo"
+      className={`event-section ${sectionClass}`}
       style={{
         textAlign: 'center',
         backgroundImage: bgImage ? `url(${bgImage})` : undefined,
@@ -257,6 +269,7 @@ export default function WeddingExperience() {
     attending: 'yes',
     message: '',
   });
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const countdown = useCountdown(WEDDING_CONFIG.ceremony.dateISO);
@@ -264,6 +277,9 @@ export default function WeddingExperience() {
   // ─── Video end handler ─────────────
   const handleVideoEnd = useCallback(() => {
     setVideoEnded(true);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wedding-play-audio'));
+    }
     setTimeout(() => setVideoFadeDone(true), 1400);
   }, []);
 
@@ -431,66 +447,82 @@ export default function WeddingExperience() {
         {/* ══════════════════════════════════════
             SECTION 1: TEMPLE REVEAL / BLESSING + LORD MURUGAN
             ══════════════════════════════════════ */}
+        {/* ══════════════════════════════════════
+            SECTION 1: THE INVITATION (HERO)
+            Warm Luxury Ivory + Celebratory Typography
+            ══════════════════════════════════════ */}
         <section
           id="invitation"
-          className="event-section event-section--brocade"
-          style={{ position: 'relative', textAlign: 'center' }}
+          className="event-section event-section--hero-ivory"
+          style={{ position: 'relative', textAlign: 'center', minHeight: '100vh', padding: 'clamp(4rem, 8vw, 6.5rem) 1.5rem' }}
         >
           <div className="section-gold-frame" />
-          <GoldenParticles count={25} />
+          <GoldenParticles count={18} />
 
-          {/* Background ornamental architecture */}
+          {/* Background subtle architectural silhouette */}
           <div
             className="hero-ornament-bg"
             style={{
               position: 'absolute',
-              top: '5%',
+              top: '4%',
               left: '50%',
               transform: 'translateX(-50%)',
-              width: 'clamp(280px, 55vw, 500px)',
-              opacity: 0.04,
+              width: 'clamp(280px, 50vw, 480px)',
+              opacity: 0.05,
               pointerEvents: 'none',
               zIndex: 0,
             }}
           >
             <svg viewBox="0 0 500 600" fill="none" style={{ width: '100%' }}>
-              {/* Gopuram silhouette */}
-              <rect x="150" y="450" width="200" height="120" fill="var(--gold-antique)" opacity="0.5" />
-              <path d="M170 450 L170 370 L330 370 L330 450 Z" fill="var(--gold-antique)" opacity="0.4" />
-              <path d="M185 370 L185 300 L315 300 L315 370 Z" fill="var(--gold-antique)" opacity="0.35" />
-              <path d="M200 300 L200 240 L300 240 L300 300 Z" fill="var(--gold-antique)" opacity="0.3" />
-              <path d="M215 240 L215 190 L285 190 L285 240 Z" fill="var(--gold-antique)" opacity="0.25" />
-              <path d="M230 190 L230 140 L270 140 L270 190 Z" fill="var(--gold-antique)" opacity="0.2" />
-              <path d="M240 140 L250 80 L260 140 Z" fill="var(--gold-antique)" opacity="0.25" />
-              {/* Kalasam */}
-              <circle cx="250" cy="72" r="10" fill="var(--gold-antique)" opacity="0.2" />
+              <rect x="150" y="450" width="200" height="120" fill="var(--gold-antique)" opacity="0.6" />
+              <path d="M170 450 L170 370 L330 370 L330 450 Z" fill="var(--gold-antique)" opacity="0.5" />
+              <path d="M185 370 L185 300 L315 300 L315 370 Z" fill="var(--gold-antique)" opacity="0.45" />
+              <path d="M200 300 L200 240 L300 240 L300 300 Z" fill="var(--gold-antique)" opacity="0.4" />
+              <circle cx="250" cy="72" r="10" fill="var(--gold-antique)" opacity="0.3" />
             </svg>
           </div>
 
           <RevealSection>
-            <div style={{ position: 'relative', zIndex: 10 }}>
-              <TempleArchOrnament opacity={0.35} />
+            <div style={{ position: 'relative', zIndex: 10, maxWidth: '640px', margin: '0 auto' }}>
+              <TempleArchOrnament opacity={0.4} />
 
-              {/* LORD MURUGAN PORTRAIT */}
-              <div style={{ marginTop: '1.5rem' }}>
-                <img
-                  src={WEDDING_CONFIG.blessing.image}
-                  alt="Lord Murugan — Sacred Deity"
-                  className="deity-portrait"
-                />
+              {/* LORD MURUGAN SACRED BLESSING */}
+              <div className="deity-portrait-container">
+                <div className="deity-portrait-wrap">
+                  <Image
+                    src={WEDDING_CONFIG.blessing.image}
+                    alt="Lord Murugan — Sacred Deity"
+                    width={896}
+                    height={1200}
+                    priority
+                    quality={100}
+                    sizes="(max-width: 768px) 175px, 230px"
+                    className="deity-portrait-img"
+                  />
+                </div>
               </div>
 
-              <div style={{ marginTop: '0.5rem' }}>
-                <p className="label-text">{WEDDING_CONFIG.blessing.blessingText}</p>
+              <div style={{ marginTop: '0.6rem' }}>
+                <p
+                  className="font-poppins"
+                  style={{
+                    fontSize: 'clamp(0.65rem, 1.4vw, 0.78rem)',
+                    fontWeight: 600,
+                    letterSpacing: '0.35em',
+                    textTransform: 'uppercase',
+                    color: '#8c6b2d',
+                  }}
+                >
+                  {WEDDING_CONFIG.blessing.blessingText}
+                </p>
                 <h2
                   className="font-heading"
                   style={{
-                    fontSize: 'clamp(1.1rem, 2.8vw, 1.6rem)',
-                    fontWeight: 600,
-                    letterSpacing: '0.25em',
-                    color: 'var(--gold-bright)',
-                    marginTop: '0.5rem',
-                    textShadow: '0 2px 15px rgba(184, 138, 53, 0.3)',
+                    fontSize: 'clamp(1.15rem, 2.8vw, 1.6rem)',
+                    fontWeight: 700,
+                    letterSpacing: '0.22em',
+                    color: '#6f1720',
+                    marginTop: '0.35rem',
                   }}
                 >
                   {WEDDING_CONFIG.blessing.deityDisplayName}
@@ -499,37 +531,51 @@ export default function WeddingExperience() {
 
               <GoldDivider width={220} />
 
-              <div style={{ marginTop: '2.5rem' }}>
-                <h1
-                  className="couple-name"
-                  style={{ fontSize: 'clamp(2rem, 7vw, 4rem)' }}
+              {/* CELEBRATORY COUPLE NAMES (WEDDING DISPLAY FONT) */}
+              <div style={{ marginTop: '2.25rem' }}>
+                <motion.h1
+                  className="couple-name-celebratory"
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {WEDDING_CONFIG.couple.groom.displayName}
-                </h1>
+                  {WEDDING_CONFIG.couple.groom.name}
+                </motion.h1>
 
-                <div
-                  className="weds-text"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                    margin: '1rem 0',
-                  }}
+                <motion.div
+                  className="weds-badge"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
                 >
-                  Weds
-                </div>
+                  weds
+                </motion.div>
 
-                <h1
-                  className="couple-name"
-                  style={{ fontSize: 'clamp(2rem, 7vw, 4rem)' }}
+                <motion.h1
+                  className="couple-name-celebratory"
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {WEDDING_CONFIG.couple.bride.displayName}
-                </h1>
+                  {WEDDING_CONFIG.couple.bride.name}
+                </motion.h1>
               </div>
 
               <GoldDivider width={180} />
 
               <p
-                className="label-text"
-                style={{ marginTop: '1.5rem', letterSpacing: '0.3em', fontSize: 'clamp(0.6rem, 1.1vw, 0.7rem)' }}
+                style={{
+                  fontFamily: 'var(--font-poppins)',
+                  fontSize: 'clamp(0.75rem, 1.7vw, 0.92rem)',
+                  fontWeight: 600,
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  color: '#6f1720',
+                  marginTop: '1.25rem',
+                }}
               >
                 {WEDDING_CONFIG.ceremony.date} · {WEDDING_CONFIG.ceremony.venue.city}
               </p>
@@ -538,39 +584,63 @@ export default function WeddingExperience() {
         </section>
 
         {/* ══════════════════════════════════════
-            DATE REVEAL: INTERACTIVE SCRATCH CARDS
+            SECTION 2: PHYSICAL METALLIC SCRATCH CARD
             ══════════════════════════════════════ */}
         <section
           id="date-reveal"
-          className="event-section event-section--brocade"
+          className="event-section event-section--story"
           style={{
             textAlign: 'center',
             minHeight: 'auto',
-            padding: '5rem 1.5rem',
+            padding: 'clamp(4rem, 8vw, 6rem) 1.5rem',
             position: 'relative',
           }}
         >
           <div className="section-border-top" />
           <div className="section-gold-frame" />
-          <GoldenParticles count={20} />
+          <GoldenParticles count={16} />
 
           <RevealSection>
-            <ScratchDateReveal
-              day={WEDDING_CONFIG.ceremony.dateNumber}
-              month="NOVEMBER"
-              year="2026"
-            />
+            <div style={{ maxWidth: '580px', margin: '0 auto 2.5rem' }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: 'clamp(0.65rem, 1.4vw, 0.78rem)',
+                  letterSpacing: '0.35em',
+                  textTransform: 'uppercase',
+                  color: '#8c6b2d',
+                  marginBottom: '0.5rem',
+                }}
+              >
+                UNVEIL THE AUSPICIOUS DATE
+              </p>
+              <h2
+                style={{
+                  fontFamily: 'var(--font-celebratory)',
+                  fontSize: 'clamp(2.2rem, 5.5vw, 3.6rem)',
+                  color: '#6f1720',
+                  lineHeight: 1.15,
+                  marginBottom: '0.5rem',
+                }}
+              >
+                When Two Hearts Become One
+              </h2>
+              <GoldDivider width={180} />
+            </div>
+
+            <PhysicalScratchCard />
           </RevealSection>
 
           <div className="section-border-bottom" />
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 2: THE COUPLE
+            SECTION 3: THE COUPLE — "THE BEGINNING OF FOREVER"
+            (NO DUPLICATE COUPLE NAMES)
             ══════════════════════════════════════ */}
         <section
           id="couple"
-          className="event-section event-section--maroon"
+          className="event-section event-section--wedding"
           style={{
             textAlign: 'center',
             backgroundImage: `url(${WEDDING_CONFIG.ceremony.bgImage || '/gallery/photo-2.jpg'})`,
@@ -578,13 +648,6 @@ export default function WeddingExperience() {
             backgroundPosition: 'center',
           }}
         >
-          {/* Rich Dark silk overlay on top of sacred background */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(180deg, rgba(58,13,18,0.92) 0%, rgba(75,17,24,0.82) 40%, rgba(58,13,18,0.92) 100%)',
-            zIndex: 0,
-          }} />
           <div className="section-border-top" style={{ zIndex: 1 }} />
           <div className="section-gold-frame" />
 
@@ -601,16 +664,35 @@ export default function WeddingExperience() {
               style={{
                 position: 'relative',
                 zIndex: 2,
-                maxWidth: '480px',
+                maxWidth: '460px',
                 margin: '2rem auto',
                 padding: '0',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.28)',
-                border: '2px solid rgba(212, 175, 55, 0.45)',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(212, 175, 55, 0.35)',
+                border: '2px solid rgba(212, 175, 55, 0.55)',
               }}
             >
-              <CoupleSilhouette />
+              <img
+                src={WEDDING_CONFIG.couple.portrait}
+                alt={`${WEDDING_CONFIG.couple.groom.name} & ${WEDDING_CONFIG.couple.bride.name} facing Meenakshi Amman Temple`}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  aspectRatio: '3/4',
+                  objectFit: 'cover',
+                  filter: 'contrast(1.03) saturate(1.05)',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  boxShadow: 'inset 0 0 40px rgba(0, 0, 0, 0.45)',
+                  pointerEvents: 'none',
+                }}
+              />
               <div className="corner-accent corner-accent--tl" />
               <div className="corner-accent corner-accent--tr" />
               <div className="corner-accent corner-accent--bl" />
@@ -618,43 +700,117 @@ export default function WeddingExperience() {
             </div>
           </RevealSection>
 
+          {/* MEANINGFUL CONTENT INSTEAD OF DUPLICATE NAMES */}
           <RevealSection delay={0.3}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <h2 className="couple-name" style={{ fontSize: 'clamp(1.6rem, 5vw, 2.8rem)', marginTop: '1rem' }}>
-                {WEDDING_CONFIG.couple.groom.displayName}
-              </h2>
-              <div className="weds-text" style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', margin: '0.75rem 0' }}>
-                &amp;
-              </div>
-              <h2 className="couple-name" style={{ fontSize: 'clamp(1.6rem, 5vw, 2.8rem)' }}>
-                {WEDDING_CONFIG.couple.bride.displayName}
-              </h2>
-            </div>
-          </RevealSection>
-
-          <RevealSection delay={0.45}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <GoldLine />
-              <p
-                className="font-accent"
+            <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '540px', margin: '1rem auto 0', padding: '0 1rem' }}>
+              <h2
+                className="font-heading"
                 style={{
-                  fontSize: 'clamp(0.9rem, 1.6vw, 1.05rem)',
-                  fontStyle: 'italic',
-                  color: 'var(--gold-antique)',
-                  letterSpacing: '0.08em',
-                  marginTop: '0.5rem',
+                  fontSize: 'clamp(1.2rem, 3.2vw, 1.8rem)',
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  color: 'var(--gold-bright)',
                 }}
               >
-                Request the honour of your gracious presence
+                THE BEGINNING OF FOREVER
+              </h2>
+              <p
+                style={{
+                  fontFamily: 'var(--font-celebratory)',
+                  fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
+                  color: '#ffd54f',
+                  margin: '0.35rem 0',
+                }}
+              >
+                Four Years · One Sacred Journey
+              </p>
+              <GoldLine />
+              <p
+                style={{
+                  fontFamily: 'var(--font-poppins)',
+                  fontSize: 'clamp(0.85rem, 1.6vw, 0.98rem)',
+                  color: 'rgba(255, 249, 234, 0.85)',
+                  lineHeight: 1.75,
+                  marginTop: '0.75rem',
+                  letterSpacing: '0.015em',
+                }}
+              >
+                With the divine grace of Lord Murugan and the blessings of our beloved parents and elders, we joyfully invite you to witness our holy union.
               </p>
             </div>
           </RevealSection>
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 3: COUNTDOWN
+            SECTION 4: CANADA → INDIA CINEMATIC VOYAGE
             ══════════════════════════════════════ */}
-        <section className="event-section event-section--maroon" style={{ minHeight: '50vh', textAlign: 'center' }}>
+        <CinematicJourney />
+
+        {/* ══════════════════════════════════════
+            SECTION 5: OUR STORY — "FOUR YEARS. ONE JOURNEY. ONE BEGINNING."
+            ══════════════════════════════════════ */}
+        <section
+          id="story"
+          className="event-section event-section--story"
+          style={{ textAlign: 'center', padding: 'clamp(4rem, 8vw, 7rem) 1.5rem' }}
+        >
+          <div className="section-border-top" />
+          <div className="section-gold-frame" />
+
+          <RevealSection>
+            <p
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: 'clamp(0.65rem, 1.5vw, 0.78rem)',
+                letterSpacing: '0.35em',
+                textTransform: 'uppercase',
+                color: '#8c6b2d',
+                marginBottom: '0.5rem',
+              }}
+            >
+              FOUR YEARS · ONE JOURNEY
+            </p>
+            <h2
+              style={{
+                fontFamily: 'var(--font-celebratory)',
+                fontSize: 'clamp(2.4rem, 6vw, 4rem)',
+                color: '#6f1720',
+                lineHeight: 1.15,
+                marginBottom: '0.6rem',
+              }}
+            >
+              A Sacred Story Written in the Stars
+            </h2>
+            <GoldDivider width={220} />
+          </RevealSection>
+
+          <div className="timeline-container" style={{ marginTop: '3rem', position: 'relative' }}>
+            {WEDDING_CONFIG.timeline.map((event, i) => (
+              <div key={event.year} className="timeline-event">
+                <RevealSection delay={i * 0.1}>
+                  <div className="timeline-year">{event.year}</div>
+                  <div className="timeline-dot" />
+                  <div className="timeline-card">
+                    <div className="timeline-title">{event.title}</div>
+                    <div className="timeline-subtitle">{event.subtitle}</div>
+                    <div className="timeline-location">📍 {event.location}</div>
+                    <GoldLine />
+                    <div className="timeline-description">{event.description}</div>
+                  </div>
+                </RevealSection>
+              </div>
+            ))}
+          </div>
+
+          <RevealSection delay={0.3}>
+            <TempleArchOrnament opacity={0.25} />
+          </RevealSection>
+        </section>
+
+        {/* ══════════════════════════════════════
+            SECTION 6: COUNTDOWN TO THE AUSPICIOUS DAY
+            ══════════════════════════════════════ */}
+        <section className="event-section event-section--wedding" style={{ minHeight: '50vh', textAlign: 'center' }}>
           <div className="section-border-top" />
           <div className="section-gold-frame" />
 
@@ -687,7 +843,7 @@ export default function WeddingExperience() {
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 4: THE WEDDING
+            SECTION 7: THE WEDDING (MUHURTHAM)
             ══════════════════════════════════════ */}
         <EventChapter
           id="wedding"
@@ -701,10 +857,11 @@ export default function WeddingExperience() {
           venueCity={ceremony.venue.city}
           mapUrl={ceremony.venue.mapUrl}
           bgImage={ceremony.bgImage}
+          sectionClass="event-section--wedding"
         />
 
         {/* ══════════════════════════════════════
-            SECTION 5: RECEPTION I
+            SECTION 8: RECEPTION I — GOBICHETTIPALAYAM
             ══════════════════════════════════════ */}
         <EventChapter
           id="reception-1"
@@ -718,10 +875,11 @@ export default function WeddingExperience() {
           venueCity={receptionOne.venue.city}
           mapUrl={receptionOne.venue.mapUrl}
           bgImage={receptionOne.bgImage}
+          sectionClass="event-section--reception-1"
         />
 
         {/* ══════════════════════════════════════
-            SECTION 6: RECEPTION II
+            SECTION 9: RECEPTION II — NAMAKKAL
             ══════════════════════════════════════ */}
         <EventChapter
           id="reception-2"
@@ -735,55 +893,17 @@ export default function WeddingExperience() {
           venueCity={receptionTwo.venue.city}
           mapUrl={receptionTwo.venue.mapUrl}
           bgImage={receptionTwo.bgImage}
+          sectionClass="event-section--reception-2"
         />
 
         {/* ══════════════════════════════════════
-            SECTION 7: OUR LOVE JOURNEY — TIMELINE
+            SECTION 10: MEMORIES (CEREMONIAL GALLERY)
             ══════════════════════════════════════ */}
-        <section
-          id="timeline"
-          className="event-section event-section--maroon"
-          style={{ textAlign: 'center' }}
-        >
-          <div className="section-border-top" />
-          <div className="section-gold-frame" />
-
-          <RevealSection>
-            <p className="label-text" style={{ marginBottom: '0.75rem' }}>OUR JOURNEY</p>
-            <h2 className="section-title" style={{
-              fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
-              marginBottom: '0.5rem',
-            }}>
-              A LOVE STORY WRITTEN IN THE STARS
-            </h2>
-            <GoldDivider width={220} />
-          </RevealSection>
-
-          <div className="timeline-container" style={{ marginTop: '3rem', position: 'relative' }}>
-            <TimelineAirplane timelineLength={WEDDING_CONFIG.timeline.length} />
-            {WEDDING_CONFIG.timeline.map((event, i) => (
-              <div key={event.year} className="timeline-event">
-                <RevealSection delay={i * 0.1}>
-                  <div className="timeline-year">{event.year}</div>
-                  <div className="timeline-dot" />
-                  <div
-                    className="timeline-card"
-                    style={{ backgroundImage: `url(${event.bgImage})` }}
-                  >
-                    <div className="timeline-title">{event.title}</div>
-                    <div className="timeline-subtitle">{event.subtitle}</div>
-                    <div className="timeline-location">📍 {event.location}</div>
-                    <GoldLine />
-                    <div className="timeline-description">{event.description}</div>
-                  </div>
-                </RevealSection>
-              </div>
-            ))}
-          </div>
-
-          <RevealSection delay={0.3}>
-            <TempleArchOrnament opacity={0.25} />
-          </RevealSection>
+        <section id="gallery" className="event-section event-section--gallery">
+          <CeremonialGallery
+            items={GALLERY_ITEMS}
+            onSelectImage={(src) => setLightboxImage(src)}
+          />
         </section>
 
         {/* ══════════════════════════════════════
@@ -828,100 +948,119 @@ export default function WeddingExperience() {
           </RevealSection>
 
           <RevealSection delay={0.2}>
-            <AnimatePresence mode="wait">
-              {!rsvpSubmitted ? (
-                <motion.form
-                  key="form"
-                  onSubmit={handleRsvpSubmit}
-                  style={{ maxWidth: 420, margin: '2rem auto 0', padding: '0 1rem' }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      className="rsvp-input"
-                      id="rsvp-name"
-                      value={rsvpForm.name}
-                      onChange={(e) => setRsvpForm((prev) => ({ ...prev, name: e.target.value }))}
-                      required
-                    />
-                    <input
-                      type="email"
-                      placeholder="Your Email"
-                      className="rsvp-input"
-                      id="rsvp-email"
-                      value={rsvpForm.email}
-                      onChange={(e) => setRsvpForm((prev) => ({ ...prev, email: e.target.value }))}
-                    />
+            <div className="rsvp-card">
+              <AnimatePresence mode="wait">
+                {!rsvpSubmitted ? (
+                  <motion.form
+                    key="form"
+                    onSubmit={handleRsvpSubmit}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div className="rsvp-field">
+                        <label htmlFor="rsvp-name" className="rsvp-field-label">Your Name</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Anand & Family"
+                          className="rsvp-input"
+                          id="rsvp-name"
+                          value={rsvpForm.name}
+                          onChange={(e) => setRsvpForm((prev) => ({ ...prev, name: e.target.value }))}
+                          required
+                        />
+                      </div>
 
-                    <select
-                      className="rsvp-input"
-                      id="rsvp-attending"
-                      value={rsvpForm.attending}
-                      onChange={(e) => setRsvpForm((prev) => ({ ...prev, attending: e.target.value }))}
-                      style={{ cursor: 'pointer' }}
+                      <div className="rsvp-field">
+                        <label htmlFor="rsvp-email" className="rsvp-field-label">Email Address</label>
+                        <input
+                          type="email"
+                          placeholder="e.g. anand@example.com"
+                          className="rsvp-input"
+                          id="rsvp-email"
+                          value={rsvpForm.email}
+                          onChange={(e) => setRsvpForm((prev) => ({ ...prev, email: e.target.value }))}
+                        />
+                      </div>
+
+                      <div className="rsvp-field">
+                        <label htmlFor="rsvp-attending" className="rsvp-field-label">Attendance</label>
+                        <select
+                          className="rsvp-input"
+                          id="rsvp-attending"
+                          value={rsvpForm.attending}
+                          onChange={(e) => setRsvpForm((prev) => ({ ...prev, attending: e.target.value }))}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <option value="yes">Joyfully Attending</option>
+                          <option value="no">Regretfully Declining</option>
+                        </select>
+                      </div>
+
+                      <div className="rsvp-field">
+                        <label htmlFor="rsvp-message" className="rsvp-field-label">Blessings & Message</label>
+                        <textarea
+                          placeholder="Wishing you a lifetime of happiness, love and harmony..."
+                          className="rsvp-input"
+                          id="rsvp-message"
+                          rows={3}
+                          value={rsvpForm.message}
+                          onChange={(e) => setRsvpForm((prev) => ({ ...prev, message: e.target.value }))}
+                          style={{ resize: 'none' }}
+                        />
+                      </div>
+
+                      <button type="submit" className="rsvp-button" id="rsvp-submit" style={{ marginTop: '0.5rem' }}>
+                        {WEDDING_CONFIG.rsvp.ctaText}
+                      </button>
+                    </div>
+                  </motion.form>
+                ) : (
+                  <motion.div
+                    key="thanks"
+                    style={{ padding: '2rem 1rem', textAlign: 'center' }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🪔</div>
+                    <h3
+                      style={{
+                        fontFamily: 'var(--font-heading)',
+                        fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+                        fontWeight: 700,
+                        letterSpacing: '0.2em',
+                        color: '#3a1a0e',
+                        marginBottom: '0.75rem',
+                      }}
                     >
-                      <option value="yes">Joyfully Attending</option>
-                      <option value="no">Regretfully Declining</option>
-                    </select>
-
-                    <textarea
-                      placeholder="Your Blessings & Message"
-                      className="rsvp-input"
-                      id="rsvp-message"
-                      rows={3}
-                      value={rsvpForm.message}
-                      onChange={(e) => setRsvpForm((prev) => ({ ...prev, message: e.target.value }))}
-                      style={{ resize: 'none' }}
-                    />
-
-                    <button type="submit" className="rsvp-button" id="rsvp-submit" style={{ marginTop: '0.5rem' }}>
-                      {WEDDING_CONFIG.rsvp.ctaText}
-                    </button>
-                  </div>
-                </motion.form>
-              ) : (
-                <motion.div
-                  key="thanks"
-                  style={{ marginTop: '2rem', padding: '2rem' }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <h3
-                    className="section-title"
-                    style={{
-                      fontSize: 'clamp(1rem, 2.2vw, 1.3rem)',
-                      marginBottom: '0.75rem',
-                    }}
-                  >
-                    THANK YOU
-                  </h3>
-                  <p
-                    className="font-accent"
-                    style={{
-                      color: 'var(--gold-antique)',
-                      fontStyle: 'italic',
-                      fontSize: 'clamp(0.9rem, 1.5vw, 1.05rem)',
-                    }}
-                  >
-                    Your blessings mean everything to us
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                      THANK YOU
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-accent)',
+                        color: '#7a4a20',
+                        fontStyle: 'italic',
+                        fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)',
+                      }}
+                    >
+                      Your blessings mean everything to us
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </RevealSection>
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 9: HEARTFELT GRATITUDE & BLESSINGS
+            SECTION 12: HEARTFELT GRATITUDE & SACRED BLESSING
             ══════════════════════════════════════ */}
         <section
-          className="event-section event-section--brocade"
+          id="blessing"
+          className="event-section event-section--blessing"
           style={{
             textAlign: 'center',
             minHeight: '60vh',
@@ -967,12 +1106,11 @@ export default function WeddingExperience() {
               }}
             >
               <p
-                className="font-accent"
                 style={{
-                  fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                  fontStyle: 'italic',
-                  color: 'var(--gold-antique)',
-                  lineHeight: 1.8,
+                  fontFamily: 'var(--font-accent)',
+                  fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+                  color: '#ffe58f',
+                  lineHeight: 1.5,
                   marginBottom: '1.5rem',
                 }}
               >
@@ -984,10 +1122,12 @@ export default function WeddingExperience() {
               </div>
 
               <p
-                className="label-text"
                 style={{
-                  fontSize: 'clamp(0.7rem, 1.3vw, 0.85rem)',
+                  fontFamily: 'var(--font-poppins)',
+                  fontSize: 'clamp(0.72rem, 1.4vw, 0.88rem)',
+                  fontWeight: 600,
                   letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
                   color: 'var(--gold-bright)',
                 }}
               >
@@ -1029,6 +1169,67 @@ export default function WeddingExperience() {
           <div className="section-border-bottom" />
         </section>
       </main>
+
+      {/* ─── FULLSCREEN GALLERY LIGHTBOX ─── */}
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxImage(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.93)',
+              zIndex: 100,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1.5rem',
+              cursor: 'zoom-out',
+            }}
+          >
+            <motion.img
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              src={lightboxImage}
+              alt="Sacred Wedding Photograph"
+              style={{
+                maxWidth: '92vw',
+                maxHeight: '86vh',
+                borderRadius: '12px',
+                border: '2px solid rgba(212, 175, 55, 0.65)',
+                boxShadow: '0 0 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(212, 175, 55, 0.35)',
+                objectFit: 'contain',
+              }}
+            />
+            <button
+              onClick={() => setLightboxImage(null)}
+              aria-label="Close Lightbox"
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '25px',
+                background: 'rgba(58, 13, 18, 0.9)',
+                border: '1.5px solid rgba(212, 175, 55, 0.6)',
+                color: '#ffe58f',
+                fontSize: '1.4rem',
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

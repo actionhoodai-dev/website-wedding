@@ -6,12 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ScratchCardProps {
   label: string;
   value: string;
+  subText?: string;
   size?: number;
   onRevealed: () => void;
 }
 
 /* ─── Individual Scratch Card ──────────────────── */
-function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps) {
+function ScratchCard({ label, value, subText, size = 140, onRevealed }: ScratchCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const isDrawingRef = useRef(false);
@@ -21,7 +22,7 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
@@ -67,7 +68,7 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
     if (revealedRef.current) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -79,7 +80,7 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
       if (pixels[i] < 128) transparent++;
     }
 
-    if (transparent / total > 0.45) {
+    if (transparent / total > 0.4) {
       revealedRef.current = true;
       setIsRevealed(true);
       onRevealed();
@@ -91,7 +92,7 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
     (clientX: number, clientY: number) => {
       const canvas = canvasRef.current;
       if (!canvas || revealedRef.current) return;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
 
       const rect = canvas.getBoundingClientRect();
@@ -103,37 +104,64 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
       ctx.beginPath();
       ctx.arc(x, y, 22 * dpr, 0, Math.PI * 2);
       ctx.fill();
-      ctx.globalCompositeOperation = 'source-over';
+
+      checkRevealPercentage();
     },
-    []
+    [checkRevealPercentage]
   );
 
   // Mouse events
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     isDrawingRef.current = true;
+    scratch(e.clientX, e.clientY);
   };
   const handleMouseUp = () => {
     isDrawingRef.current = false;
     checkRevealPercentage();
   };
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDrawingRef.current) scratch(e.clientX, e.clientY);
-  };
-
-  // Touch events
-  const handleTouchStart = () => {
-    isDrawingRef.current = true;
-  };
-  const handleTouchEnd = () => {
-    isDrawingRef.current = false;
-    checkRevealPercentage();
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (isDrawingRef.current && e.touches[0]) {
-      e.preventDefault();
-      scratch(e.touches[0].clientX, e.touches[0].clientY);
+    if (isDrawingRef.current) {
+      scratch(e.clientX, e.clientY);
     }
   };
+
+  // Touch events — use native listeners with { passive: false } so preventDefault works
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+      if (e.touches[0]) {
+        scratch(e.touches[0].clientX, e.touches[0].clientY);
+      }
+      isDrawingRef.current = true;
+    };
+    const onTouchEnd = () => {
+      isDrawingRef.current = false;
+      checkRevealPercentage();
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (isDrawingRef.current && e.touches[0]) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        scratch(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    canvas.addEventListener('touchend', onTouchEnd);
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchend', onTouchEnd);
+      canvas.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [scratch, checkRevealPercentage]);
 
   return (
     <div
@@ -148,7 +176,7 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
       <span
         style={{
           fontFamily: 'var(--font-heading, "Cinzel", serif)',
-          fontSize: 'clamp(0.6rem, 1.2vw, 0.7rem)',
+          fontSize: 'clamp(0.65rem, 1.2vw, 0.75rem)',
           letterSpacing: '0.35em',
           textTransform: 'uppercase',
           color: 'var(--gold-antique, #b88a35)',
@@ -178,10 +206,12 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
             position: 'absolute',
             inset: 0,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             background: 'radial-gradient(circle, rgba(58, 13, 18, 0.95) 0%, rgba(35, 7, 10, 1) 100%)',
             borderRadius: '50%',
+            padding: '8px',
           }}
         >
           <motion.span
@@ -190,15 +220,36 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             style={{
               fontFamily: 'var(--font-heading, "Cinzel", serif)',
-              fontSize: `clamp(${size * 0.22}px, 5vw, ${size * 0.3}px)`,
+              fontSize:
+                value.length > 2
+                  ? `clamp(${size * 0.22}px, 4.5vw, ${size * 0.26}px)`
+                  : `clamp(${size * 0.3}px, 6vw, ${size * 0.36}px)`,
               fontWeight: 700,
               color: 'var(--gold-bright, #d4af37)',
               textShadow: '0 2px 20px rgba(212, 175, 55, 0.5)',
-              letterSpacing: '0.05em',
+              letterSpacing: '0.04em',
+              lineHeight: 1,
             }}
           >
             {value}
           </motion.span>
+          {subText && (
+            <motion.span
+              initial={{ opacity: 0, y: 3 }}
+              animate={isRevealed ? { opacity: 0.9, y: 0 } : { opacity: 0, y: 3 }}
+              transition={{ delay: 0.15 }}
+              style={{
+                fontFamily: 'var(--font-heading, "Cinzel", serif)',
+                fontSize: `clamp(${size * 0.075}px, 1.5vw, ${size * 0.09}px)`,
+                letterSpacing: '0.22em',
+                color: 'var(--gold-antique, #b88a35)',
+                textTransform: 'uppercase',
+                marginTop: '4px',
+              }}
+            >
+              {subText}
+            </motion.span>
+          )}
         </div>
 
         {/* Scratch canvas overlay */}
@@ -210,18 +261,13 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
           onMouseMove={handleMouseMove}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onTouchMove={handleTouchMove}
+          /* touch events handled via native addEventListener for passive: false */
           style={{
             position: 'absolute',
             inset: 0,
             width: size,
             height: size,
-            borderRadius: '50%',
             cursor: isRevealed ? 'default' : 'grab',
-            opacity: isRevealed ? 0 : 1,
-            transition: 'opacity 0.8s ease',
             touchAction: 'none',
           }}
         />
@@ -230,23 +276,33 @@ function ScratchCard({ label, value, size = 140, onRevealed }: ScratchCardProps)
   );
 }
 
-/* ─── Confetti Particle ──────────────────── */
+/* ─── Confetti Particle ──────────────────────── */
 function ConfettiParticle({ delay, color, left }: { delay: number; color: string; left: string }) {
   return (
     <motion.div
-      initial={{ y: 0, x: 0, opacity: 1, rotate: 0, scale: 1 }}
-      animate={{
-        y: [0, -120, 400],
-        x: [0, (Math.random() - 0.5) * 200],
-        opacity: [1, 1, 0],
-        rotate: [0, 360 + Math.random() * 360],
-        scale: [0.5, 1.2, 0.3],
+      initial={{
+        opacity: 1,
+        y: -20,
+        x: 0,
+        scale: 1,
+        rotate: 0,
       }}
-      transition={{ duration: 2.5 + Math.random(), delay, ease: 'easeOut' }}
+      animate={{
+        opacity: [1, 1, 0],
+        y: [0, 400 + Math.random() * 200],
+        x: [(Math.random() - 0.5) * 200, (Math.random() - 0.5) * 400],
+        scale: [1, 1.2, 0.5],
+        rotate: [0, Math.random() * 720 - 360],
+      }}
+      transition={{
+        duration: 2.5 + Math.random() * 1.5,
+        delay,
+        ease: 'easeOut',
+      }}
       style={{
         position: 'absolute',
+        top: '20%',
         left,
-        top: '50%',
         width: `${6 + Math.random() * 8}px`,
         height: `${6 + Math.random() * 8}px`,
         background: color,
@@ -260,13 +316,13 @@ function ConfettiParticle({ delay, color, left }: { delay: number; color: string
 
 /* ─── Main Scratch Date Reveal Component ──────── */
 export function ScratchDateReveal({
-  day,
-  month,
-  year,
+  day = '11',
+  month = '11',
+  year = '2026',
 }: {
-  day: string;
-  month: string;
-  year: string;
+  day?: string;
+  month?: string;
+  year?: string;
 }) {
   const [revealedCount, setRevealedCount] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -290,7 +346,22 @@ export function ScratchDateReveal({
     '#e57373', '#b8860b', '#fff176', '#ff8a65', '#f8bbd0',
   ];
 
-  const cardSize = typeof window !== 'undefined' && window.innerWidth < 500 ? 110 : 140;
+  const [cardSize, setCardSize] = useState(140);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 420) {
+        setCardSize(115);
+      } else if (window.innerWidth < 600) {
+        setCardSize(125);
+      } else {
+        setCardSize(140);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div style={{ position: 'relative', overflow: 'hidden' }}>
@@ -345,7 +416,7 @@ export function ScratchDateReveal({
         style={{
           fontStyle: 'italic',
           color: 'var(--gold-antique, #b88a35)',
-          fontSize: 'clamp(0.8rem, 1.3vw, 0.95rem)',
+          fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
           marginBottom: '2.5rem',
           letterSpacing: '0.06em',
         }}
@@ -375,6 +446,7 @@ export function ScratchDateReveal({
           <ScratchCard
             label="THE DAY"
             value={day}
+            subText="DAY"
             size={cardSize}
             onRevealed={handleCardRevealed}
           />
@@ -389,6 +461,7 @@ export function ScratchDateReveal({
           <ScratchCard
             label="THE MONTH"
             value={month}
+            subText="NOV"
             size={cardSize}
             onRevealed={handleCardRevealed}
           />
@@ -403,6 +476,7 @@ export function ScratchDateReveal({
           <ScratchCard
             label="THE YEAR"
             value={year}
+            subText="2026"
             size={cardSize}
             onRevealed={handleCardRevealed}
           />
@@ -421,23 +495,54 @@ export function ScratchDateReveal({
               textAlign: 'center',
             }}
           >
+            <motion.div
+              style={{
+                display: 'inline-block',
+                padding: '0.65rem 2rem',
+                borderRadius: '50px',
+                border: '1px solid rgba(212, 175, 55, 0.4)',
+                background: 'rgba(58, 13, 18, 0.8)',
+                backdropFilter: 'blur(8px)',
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.25)',
+                marginBottom: '1rem',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-heading, "Cinzel", serif)',
+                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+                  fontWeight: 700,
+                  letterSpacing: '0.2em',
+                  color: 'var(--gold-bright, #d4af37)',
+                }}
+              >
+                11 · 11 · 2026
+              </span>
+            </motion.div>
+
             <motion.p
               style={{
                 fontFamily: 'var(--font-accent, "Cormorant Garamond", serif)',
-                fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+                fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)',
                 fontStyle: 'italic',
-                color: 'var(--gold-bright, #d4af37)',
+                color: 'var(--gold-antique, #b88a35)',
                 textShadow: '0 2px 15px rgba(212, 175, 55, 0.4)',
                 lineHeight: 1.6,
               }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
             >
-              ✨ Save the Date ✨
+              ✨ WEDNESDAY, 11th NOVEMBER 2026 ✨
               <br />
-              <span style={{ fontSize: '0.85em', opacity: 0.8 }}>
-                A sacred beginning awaits
+              <span
+                style={{
+                  fontSize: '0.85em',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'var(--font-heading, "Cinzel", serif)',
+                  color: 'var(--gold-bright, #d4af37)',
+                  opacity: 0.9,
+                }}
+              >
+                A Sacred Union at Meenakshi Amman Temple, Madurai
               </span>
             </motion.p>
           </motion.div>

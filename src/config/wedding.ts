@@ -17,7 +17,7 @@ export const WEDDING_CONFIG = {
       name: 'Swetha',
       displayName: 'SWETHA',
     },
-    portrait: '/couple/portrait.jpg',
+    portrait: '/couple/temple-view.jpg',
   },
 
   // ─── Blessing / Deity ─────────────────────────
@@ -81,7 +81,7 @@ export const WEDDING_CONFIG = {
       city: 'NAMAKKAL',
       mapUrl: 'https://maps.google.com/?q=Sri+Mahal+Namakkal',
     },
-    bgImage: '/gallery/photo-5.jpg',
+    bgImage: '/gallery/reception-namakkal.jpg',
   },
 
   // ─── RSVP ─────────────────────────────────────
@@ -141,21 +141,39 @@ export const WEDDING_CONFIG = {
     },
   ],
 
+  // ─── Canada to India Journey ─────────────────
+  journey: {
+    origin: {
+      city: 'Mississauga',
+      region: 'Ontario, Canada',
+      subtitle: 'Where Destiny Intertwined',
+      description: 'Amidst cool Canadian horizons and peaceful snow-kissed evenings, serendipity brought two Tamil hearts together.',
+    },
+    destination: {
+      city: 'Madurai',
+      region: 'Tamil Nadu, India',
+      subtitle: 'Meenakshi Amman Temple',
+      description: 'The eternal cultural capital where heritage, sacred fire, and divine blessings unite their souls.',
+    },
+    distanceKm: '12,500 KM',
+    flightHours: '18 Hours Across Oceans',
+    yearsTogether: 'Four Years of Devotion',
+  },
+
   // ─── Navigation ───────────────────────────────
   navigation: [
     { id: 'invitation', label: 'THE INVITATION' },
-    { id: 'date-reveal', label: 'DATE REVEAL' },
-    { id: 'couple', label: 'THE COUPLE' },
+    { id: 'story', label: 'OUR STORY' },
     { id: 'wedding', label: 'THE WEDDING' },
     { id: 'reception-1', label: 'RECEPTION I' },
     { id: 'reception-2', label: 'RECEPTION II' },
-    { id: 'timeline', label: 'OUR JOURNEY' },
+    { id: 'gallery', label: 'MEMORIES' },
     { id: 'rsvp', label: 'RSVP' },
   ],
 
   // ─── Meta / SEO ───────────────────────────────
   meta: {
-    title: 'Rajha Mukhilan & Swetha — Wedding Invitation',
+    title: 'Rajha Mukhilan & Swetha — South Indian Wedding Invitation',
     description:
       'You are cordially invited to celebrate the union of Rajha Mukhilan and Swetha. With the blessings of Lord Murugan.',
     ogImage: '/couple/portrait.jpg',

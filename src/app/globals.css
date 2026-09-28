@@ -1,18 +1,19 @@
 /* ============================================
-   GOOGLE FONTS — Premium Editorial Typography
+   GOOGLE FONTS — Celebratory Wedding + Poppins UI
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Cinzel:wght@400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Berkshire+Swash&family=Cinzel:wght@400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
 
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS — MAXIMALIST SOUTH INDIAN INVITATION
-   Deep Maroon + Antique Gold + Warm Cream
+   DESIGN TOKENS — CELEBRATION-FIRST WEDDING INVITATION
+   Warm Ivory + Ceremonial Red + Antique Gold + Poppins
    ============================================ */
 :root {
   /* ─── Core Palette ─── */
   --ivory: #F7F0DF;
   --ivory-light: #FFF9EA;
+  --ivory-hero: #FFFDF8;
   --ivory-warm: #F5ECD7;
   --cream: #FFFDF5;
   --cream-warm: #FAF0D8;
@@ -36,18 +37,26 @@
   --brown-warm: #4A3728;
   --brown-text: #5C4A3A;
 
+  /* Canada / Mississauga Tones */
+  --canada-ice: #F0F4F8;
+  --canada-slate: #64748B;
+  --canada-navy: #1E293B;
+
   /* ─── Surfaces ─── */
-  --bg-primary: var(--maroon-dark);
+  --bg-primary: var(--ivory-hero);
   --bg-section: var(--ivory);
   --bg-card: rgba(255, 249, 234, 0.85);
   --bg-dark: var(--maroon-dark);
   --bg-dark-deep: var(--maroon-deeper);
 
-  /* ─── Typography ─── */
+  /* ─── Typography System ─── */
+  --font-celebratory: 'Great Vibes', 'Alex Brush', cursive;
+  --font-banner: 'Berkshire Swash', cursive, serif;
   --font-display: 'Cinzel Decorative', 'Cinzel', serif;
   --font-heading: 'Cinzel', serif;
-  --font-body: 'EB Garamond', 'Cormorant Garamond', serif;
-  --font-accent: 'Cormorant Garamond', serif;
+  --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Great Vibes', cursive;
   --font-tamil: 'Noto Sans Tamil', sans-serif;
 
   /* ─── Spacing ─── */
@@ -98,9 +107,9 @@ html.lenis, html.lenis body {
 }
 
 body {
-  background: var(--maroon-deeper);
-  color: var(--ivory);
-  font-family: var(--font-body);
+  background: var(--ivory-hero);
+  color: var(--brown-dark);
+  font-family: var(--font-poppins);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.6;
@@ -109,6 +118,18 @@ body {
 /* ============================================
    TYPOGRAPHY SYSTEM
    ============================================ */
+.font-celebratory {
+  font-family: var(--font-celebratory);
+}
+
+.font-banner {
+  font-family: var(--font-banner);
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
+}
+
 .font-display {
   font-family: var(--font-display);
   letter-spacing: 0.15em;
@@ -122,12 +143,32 @@ body {
 }
 
 .font-body {
-  font-family: var(--font-body);
-  letter-spacing: 0.02em;
+  font-family: var(--font-poppins);
+  letter-spacing: 0.015em;
 }
 
 .font-accent {
-  font-family: var(--font-accent);
+  font-family: var(--font-celebratory);
+}
+
+.couple-name-celebratory {
+  font-family: var(--font-celebratory);
+  font-size: clamp(3.2rem, 9.5vw, 6rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: #6f1720;
+  text-shadow: 0 3px 20px rgba(184, 138, 53, 0.22);
+  margin: 0.15rem 0;
+}
+
+.weds-badge {
+  display: inline-block;
+  font-family: var(--font-celebratory);
+  font-size: clamp(1.8rem, 4.2vw, 2.8rem);
+  color: #b88a35;
+  margin: 0.25rem 0;
+  font-style: italic;
+  line-height: 1;
   letter-spacing: 0.05em;
 }
 
@@ -282,6 +323,122 @@ body {
 }
 
 /* ─── Background Variants ─── */
+/* ─── Environmental Background Variants (Color Story Journey) ─── */
+
+/* 1. Hero / Invitation — Luxury Warm Ivory */
+.event-section--hero-ivory {
+  background: linear-gradient(180deg, #fffdf8 0%, #fdf6e6 45%, #f7ecd4 100%);
+  color: var(--brown-dark);
+}
+
+.event-section--hero-ivory .label-text {
+  color: #8c6b2d;
+}
+
+.event-section--hero-ivory .section-title {
+  color: #6f1720;
+}
+
+/* 2. Mississauga, Canada — Cool Ivory & Misty Blue */
+.event-section--mississauga {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f6 50%, #e2e8f0 100%);
+  color: #1e293b;
+}
+
+/* 3. Journey Across Continents — Oceanic Soft Blue to Indian Cream */
+.event-section--journey {
+  background: linear-gradient(180deg, #f0f4f9 0%, #e6f0fa 35%, #fffbf0 70%, #faf1dd 100%);
+  color: #2d211b;
+}
+
+/* 4. Our Story / Milestones — Warm Cream & Turmeric Gold */
+.event-section--story {
+  background: linear-gradient(180deg, #faf3e3 0%, #fefcf7 50%, #f7ecd5 100%);
+  color: #2d211b;
+}
+
+/* 5. The Wedding — Sacred Meenakshi Temple Atmosphere */
+.event-section--wedding {
+  background-size: cover;
+  background-position: center;
+  color: var(--ivory);
+}
+
+.event-section--wedding::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(58, 13, 18, 0.9) 0%,
+    rgba(75, 17, 24, 0.76) 40%,
+    rgba(58, 13, 18, 0.92) 100%);
+  z-index: 0;
+}
+
+.event-section--wedding > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 6. Reception 1 — Warm Golden Floral Ambiance */
+.event-section--reception-1 {
+  background-size: cover;
+  background-position: center;
+  color: var(--ivory);
+}
+
+.event-section--reception-1::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(45, 12, 18, 0.92) 0%,
+    rgba(80, 24, 30, 0.78) 50%,
+    rgba(40, 10, 15, 0.94) 100%);
+  z-index: 0;
+}
+
+.event-section--reception-1 > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 7. Reception 2 — Deep Maroon & Gold Brocade Ambiance */
+.event-section--reception-2 {
+  background-size: cover;
+  background-position: center;
+  color: var(--ivory);
+}
+
+.event-section--reception-2::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(35, 7, 10, 0.94) 0%,
+    rgba(58, 13, 18, 0.84) 50%,
+    rgba(28, 5, 8, 0.96) 100%);
+  z-index: 0;
+}
+
+.event-section--reception-2 > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 8. Memories / Gallery — Warm Royal Ivory & Gold */
+.event-section--gallery {
+  background: linear-gradient(180deg, #1f0609 0%, #2e090e 50%, #1a0407 100%);
+  color: var(--ivory);
+}
+
+/* 9. Final Blessing — Sacred Ceremonial Red */
+.event-section--blessing {
+  background: linear-gradient(180deg, #3a0d12 0%, #4b1118 50%, #2b080d 100%);
+  color: var(--ivory);
+}
+
+/* Legacy support */
 .event-section--maroon {
   background: linear-gradient(180deg, var(--maroon-dark) 0%, var(--maroon-deeper) 40%, var(--maroon-dark) 100%);
   color: var(--ivory);
@@ -296,7 +453,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(58, 13, 18, 0.82);
+  background: rgba(58, 13, 18, 0.85);
   z-index: 0;
 }
 
@@ -305,142 +462,61 @@ body {
   z-index: 1;
 }
 
-.event-section--cream {
-  background: url('/parchment-bg.jpg') center/cover no-repeat;
-  color: var(--brown-dark);
-}
-
-.event-section--cream::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(250, 240, 216, 0.75);
-  z-index: 0;
-}
-
-.event-section--cream > * {
-  position: relative;
-  z-index: 1;
-}
-
-.event-section--cream .couple-name,
-.event-section--cream .section-title {
-  color: var(--red-deep);
-  text-shadow: none;
-}
-
-.event-section--cream .label-text {
-  color: var(--gold-deep);
-  text-shadow: none;
-}
-
-.event-section--cream .ornament-line {
-  background: linear-gradient(90deg, transparent 0%, var(--gold-deep) 50%, transparent 100%);
-}
-
-/* ─── Photo Background Event Section ─── */
-.event-section--photo {
-  background-size: cover;
-  background-position: center;
-  color: var(--ivory);
-}
-
-.event-section--photo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg,
-    rgba(58, 13, 18, 0.88) 0%,
-    rgba(75, 17, 24, 0.75) 30%,
-    rgba(58, 13, 18, 0.85) 70%,
-    rgba(45, 10, 15, 0.92) 100%);
-  z-index: 0;
-}
-
-.event-section--photo > * {
-  position: relative;
-  z-index: 1;
-}
-
-.event-section--photo .event-date-number {
+/* ─── Event Date — Dominant Number in Poppins ─── */
+.event-date-number {
+  font-family: var(--font-poppins);
+  font-size: clamp(5.5rem, 19vw, 10.5rem);
+  font-weight: 700;
+  line-height: 0.85;
   color: var(--gold-bright);
+  letter-spacing: -0.02em;
   text-shadow: 0 4px 30px rgba(184, 138, 53, 0.4);
 }
 
-.event-section--photo .event-month-year {
-  color: var(--ivory);
-}
-
-.event-section--photo .event-day {
-  color: rgba(255, 249, 234, 0.7);
-}
-
-.event-section--photo .event-time {
-  color: var(--ivory);
-}
-
-.event-section--photo .event-venue-name {
-  color: var(--gold-bright);
-}
-
-.event-section--photo .event-venue-address {
-  color: rgba(255, 249, 234, 0.75);
-}
-
-/* ─── Event Date — Dominant Number ─── */
-.event-date-number {
-  font-family: var(--font-display);
-  font-size: clamp(5rem, 18vw, 10rem);
-  font-weight: 400;
-  line-height: 0.85;
-  color: var(--gold-bright);
-  letter-spacing: 0.05em;
-  text-shadow: 0 4px 30px rgba(184, 138, 53, 0.35);
-}
-
 .event-month-year {
-  font-family: var(--font-heading);
-  font-size: clamp(0.85rem, 2vw, 1.1rem);
-  letter-spacing: 0.35em;
+  font-family: var(--font-poppins);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--gold-antique);
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
 }
 
 .event-day {
-  font-family: var(--font-heading);
-  font-size: clamp(0.65rem, 1.3vw, 0.8rem);
-  letter-spacing: 0.5em;
+  font-family: var(--font-poppins);
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  font-weight: 500;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(255, 249, 234, 0.6);
-  margin-top: 0.75rem;
+  color: rgba(255, 249, 234, 0.7);
+  margin-top: 0.5rem;
 }
 
 .event-time {
-  font-family: var(--font-body);
+  font-family: var(--font-poppins);
   font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   color: var(--ivory);
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .event-venue-name {
   font-family: var(--font-heading);
-  font-size: clamp(0.8rem, 1.6vw, 1rem);
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  font-size: clamp(1.2rem, 3.2vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
   color: var(--gold-bright);
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .event-venue-address {
-  font-family: var(--font-accent);
-  font-size: clamp(0.8rem, 1.4vw, 0.95rem);
-  letter-spacing: 0.1em;
-  color: rgba(255, 249, 234, 0.65);
-  font-style: italic;
-  margin-top: 0.35rem;
+  font-family: var(--font-poppins);
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  color: rgba(255, 249, 234, 0.78);
+  margin-top: 0.25rem;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================
@@ -555,59 +631,104 @@ body {
 }
 
 /* ============================================
-   RSVP FORM — Invitation Style
+   RSVP FORM — White Luxury Card Style
    ============================================ */
+.rsvp-card {
+  position: relative;
+  max-width: 480px;
+  margin: 2rem auto 0;
+  padding: clamp(2rem, 5vw, 2.75rem) clamp(1.5rem, 4vw, 2.25rem);
+  background: #ffffff;
+  border: 1px solid rgba(184, 138, 53, 0.4);
+  border-radius: 14px;
+  box-shadow:
+    0 16px 45px rgba(0, 0, 0, 0.35),
+    0 0 25px rgba(184, 138, 53, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  text-align: left;
+  overflow: hidden;
+}
+
+.rsvp-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-antique), var(--gold-bright), var(--gold-antique), transparent);
+}
+
+.rsvp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rsvp-field-label {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #7a4a20;
+}
+
 .rsvp-input {
   width: 100%;
   padding: 0.85rem 1rem;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(184, 138, 53, 0.4);
-  color: var(--ivory);
+  background: #faf7f2;
+  border: 1.5px solid rgba(184, 138, 53, 0.3);
+  border-radius: 8px;
+  color: #2b1810;
   font-family: var(--font-body);
-  font-size: 1.05rem;
-  letter-spacing: 0.03em;
-  transition: all 0.4s var(--ease-silk);
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  transition: all 0.3s var(--ease-silk);
   outline: none;
-  border-radius: 0;
   -webkit-appearance: none;
 }
 
 .rsvp-input:focus {
-  border-bottom-color: var(--gold-bright);
+  background: #ffffff;
+  border-color: #b8860b;
+  box-shadow: 0 0 0 3px rgba(184, 138, 53, 0.15);
 }
 
 .rsvp-input::placeholder {
-  color: rgba(255, 249, 234, 0.45);
+  color: #9c897d;
   font-style: italic;
 }
 
 .rsvp-input option {
-  background: var(--maroon-dark);
-  color: var(--ivory);
+  background: #ffffff;
+  color: #2b1810;
 }
 
 .rsvp-button {
-  padding: 1rem 3rem;
-  background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-antique) 50%, var(--gold-deep) 100%);
-  color: var(--maroon-deeper);
+  width: 100%;
+  padding: 0.95rem 2rem;
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #c5993a 100%);
+  color: #1a0508;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.35em;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  border: 1px solid var(--gold-antique);
+  border: 1px solid rgba(184, 138, 53, 0.7);
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.5s var(--ease-silk);
+  transition: all 0.4s var(--ease-silk);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(184, 138, 53, 0.3);
 }
 
 .rsvp-button::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.25) 50%, transparent 100%);
   transform: translateX(-100%);
   transition: transform 0.6s var(--ease-silk);
 }
@@ -617,8 +738,9 @@ body {
 }
 
 .rsvp-button:hover {
-  background: linear-gradient(135deg, var(--gold-antique) 0%, var(--gold-bright) 50%, var(--gold-antique) 100%);
-  box-shadow: 0 0 30px rgba(184, 138, 53, 0.4);
+  background: linear-gradient(135deg, #d4af37 0%, #ffe082 50%, #d4af37 100%);
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.45);
+  transform: translateY(-2px);
 }
 
 /* ============================================
@@ -670,22 +792,27 @@ body {
 .map-link {
   display: inline-block;
   margin-top: 1.5rem;
-  padding: 0.6rem 1.8rem;
-  border: 1px solid rgba(184, 138, 53, 0.5);
-  color: var(--gold-antique);
+  padding: 0.65rem 2rem;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #c5993a 100%);
+  color: #1a0508;
   font-family: var(--font-heading);
   font-size: 0.65rem;
-  letter-spacing: 0.35em;
+  font-weight: 700;
+  letter-spacing: 0.3em;
   text-decoration: none;
   text-transform: uppercase;
   transition: all 0.4s var(--ease-silk);
+  box-shadow: 0 4px 15px rgba(184, 138, 53, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .map-link:hover {
+  background: linear-gradient(135deg, #d4af37 0%, #ffe082 50%, #d4af37 100%);
   border-color: var(--gold-bright);
-  color: var(--gold-bright);
-  background: rgba(184, 138, 53, 0.12);
-  box-shadow: 0 0 20px rgba(184, 138, 53, 0.2);
+  color: #1a0508;
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 /* ============================================
@@ -773,22 +900,37 @@ body {
 
 .timeline-card {
   position: relative;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(184, 138, 53, 0.3);
+  background: linear-gradient(145deg, #fef9ef 0%, #fdf3e1 40%, #f9edd3 100%);
+  border: 1px solid rgba(184, 138, 53, 0.35);
+  border-radius: 12px;
   padding: clamp(2rem, 5vw, 3rem);
   overflow: hidden;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(184, 138, 53, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .timeline-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg,
-    rgba(58, 13, 18, 0.92) 0%,
-    rgba(75, 17, 24, 0.85) 50%,
-    rgba(58, 13, 18, 0.92) 100%);
+  background:
+    radial-gradient(circle at top right, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at bottom left, rgba(184, 134, 11, 0.06) 0%, transparent 50%);
   z-index: 0;
+  pointer-events: none;
+}
+
+.timeline-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-antique), var(--gold-bright), var(--gold-antique), transparent);
+  z-index: 1;
 }
 
 .timeline-card > * {
@@ -800,53 +942,94 @@ body {
   font-family: var(--font-heading);
   font-size: clamp(0.8rem, 1.6vw, 1rem);
   font-weight: 700;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--gold-bright);
-  margin-bottom: 0.25rem;
+  color: #3a1a0e;
+  margin-bottom: 0.3rem;
 }
 
 .timeline-subtitle {
   font-family: var(--font-accent);
   font-size: clamp(0.9rem, 1.4vw, 1.05rem);
   font-style: italic;
-  color: var(--gold-antique);
-  letter-spacing: 0.08em;
+  color: #7a4a20;
+  letter-spacing: 0.06em;
   margin-bottom: 0.75rem;
 }
 
 .timeline-location {
   font-family: var(--font-heading);
   font-size: 0.6rem;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(255, 249, 234, 0.5);
+  color: #9a7845;
   margin-bottom: 1rem;
 }
 
 .timeline-description {
   font-family: var(--font-body);
-  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
-  color: rgba(255, 249, 234, 0.8);
-  line-height: 1.8;
-  letter-spacing: 0.02em;
+  font-size: clamp(0.88rem, 1.4vw, 1.02rem);
+  color: #4a2a18;
+  line-height: 1.85;
+  letter-spacing: 0.015em;
 }
 
 /* ============================================
    LORD MURUGAN DEITY PORTRAIT
    ============================================ */
-.deity-portrait {
-  width: clamp(140px, 35vw, 240px);
+.deity-portrait-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.2rem auto 0.6rem;
+  position: relative;
+}
+
+.deity-portrait-wrap {
+  position: relative;
+  width: clamp(140px, 38vw, 175px); /* Mobile medium scale */
+  max-width: 175px;
+  filter: drop-shadow(0 6px 20px rgba(184, 138, 53, 0.45));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .deity-portrait-wrap {
+    width: clamp(190px, 16vw, 230px); /* Laptop / desktop medium scale */
+    max-width: 230px;
+    filter: drop-shadow(0 8px 28px rgba(184, 138, 53, 0.5));
+  }
+}
+
+.deity-portrait-img {
+  width: 100%;
   height: auto;
-  margin: 0 auto 1.5rem;
   display: block;
-  filter: drop-shadow(0 0 30px rgba(184, 138, 53, 0.4));
+  object-fit: contain;
+  image-rendering: auto;
   animation: deityGlow 4s ease-in-out infinite alternate;
 }
 
+.deity-portrait {
+  width: clamp(140px, 38vw, 175px);
+  max-width: 175px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 6px 20px rgba(184, 138, 53, 0.45));
+  animation: deityGlow 4s ease-in-out infinite alternate;
+}
+
+@media (min-width: 768px) {
+  .deity-portrait {
+    width: clamp(190px, 16vw, 230px);
+    max-width: 230px;
+  }
+}
+
 @keyframes deityGlow {
-  0% { filter: drop-shadow(0 0 20px rgba(184, 138, 53, 0.3)); }
-  100% { filter: drop-shadow(0 0 40px rgba(184, 138, 53, 0.55)); }
+  0% { filter: drop-shadow(0 4px 18px rgba(184, 138, 53, 0.35)); }
+  100% { filter: drop-shadow(0 8px 32px rgba(184, 138, 53, 0.6)); }
 }
 
 /* ============================================
