@@ -308,6 +308,10 @@ export default function WeddingExperience() {
         touchMultiplier: 1.5,
       });
 
+      lenis.on('scroll', () => {
+        window.dispatchEvent(new CustomEvent('wedding-scroll-activity'));
+      });
+
       function raf(time: number) {
         lenis?.raf(time);
         requestAnimationFrame(raf);

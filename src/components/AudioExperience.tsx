@@ -73,14 +73,24 @@ export function AudioExperience() {
       }
     });
 
+    const GESTURE_EVENTS = [
+      'pointerdown',
+      'pointerup',
+      'click',
+      'touchstart',
+      'touchend',
+      'touchmove',
+      'scroll',
+      'wheel',
+      'keydown',
+    ] as const;
+
     const cleanupGestureListeners = () => {
-      window.removeEventListener('pointerdown', handleUnlock);
-      window.removeEventListener('click', handleUnlock);
-      window.removeEventListener('touchstart', handleUnlock);
-      window.removeEventListener('touchmove', handleUnlock);
-      window.removeEventListener('scroll', handleUnlock);
-      window.removeEventListener('wheel', handleUnlock);
-      window.removeEventListener('keydown', handleUnlock);
+      GESTURE_EVENTS.forEach((evt) => {
+        window.removeEventListener(evt, handleUnlock, true);
+        document.removeEventListener(evt, handleUnlock, true);
+      });
+      window.removeEventListener('wedding-scroll-activity', handleUnlock);
     };
 
     audio.addEventListener('play', () => {
@@ -105,6 +115,7 @@ export function AudioExperience() {
         setIsMuted(false);
         return;
       }
+      audioRef.current.muted = false;
       audioRef.current
         .play()
         .then(() => {
@@ -127,6 +138,7 @@ export function AudioExperience() {
         }
 
         // Only start if not already playing
+        audioRef.current.muted = false;
         audioRef.current
           .play()
           .then(() => {
@@ -140,7 +152,7 @@ export function AudioExperience() {
       }
     };
 
-    // Unlock audio element early on any user interaction (tap, scroll, wheel, touch)
+    // Unlock audio element early on any user interaction (tap, scroll, wheel, touch, touchend)
     function handleUnlock() {
       setIsVisible(true);
       if (!userMutedRef.current) {
@@ -148,14 +160,13 @@ export function AudioExperience() {
       }
     }
 
+    // Attach to both window and document at capture phase to guarantee interception of any mobile scroll
+    GESTURE_EVENTS.forEach((evt) => {
+      window.addEventListener(evt, handleUnlock, { capture: true, passive: true });
+      document.addEventListener(evt, handleUnlock, { capture: true, passive: true });
+    });
+    window.addEventListener('wedding-scroll-activity', handleUnlock);
     window.addEventListener('wedding-play-audio', handleSynchronizedPlay);
-    window.addEventListener('pointerdown', handleUnlock, { passive: true });
-    window.addEventListener('click', handleUnlock, { passive: true });
-    window.addEventListener('touchstart', handleUnlock, { passive: true });
-    window.addEventListener('touchmove', handleUnlock, { passive: true });
-    window.addEventListener('scroll', handleUnlock, { passive: true });
-    window.addEventListener('wheel', handleUnlock, { passive: true });
-    window.addEventListener('keydown', handleUnlock, { passive: true });
 
     return () => {
       cleanupGestureListeners();
