@@ -4,6 +4,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { WEDDING_CONFIG } from '@/config/wedding';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { AudioExperience } from '@/components/AudioExperience';
+import { ScratchDateReveal } from '@/components/ScratchDateReveal';
+import { CoupleSilhouette } from '@/components/CoupleSilhouette';
+import { TimelineAirplane } from '@/components/TimelineAirplane';
+import { GoldenParticles } from '@/components/GoldenParticles';
 
 /* ============================================================
    UTILITY — Countdown Hook
@@ -433,6 +437,7 @@ export default function WeddingExperience() {
           style={{ position: 'relative', textAlign: 'center' }}
         >
           <div className="section-gold-frame" />
+          <GoldenParticles count={25} />
 
           {/* Background ornamental architecture */}
           <div
@@ -533,6 +538,34 @@ export default function WeddingExperience() {
         </section>
 
         {/* ══════════════════════════════════════
+            DATE REVEAL: INTERACTIVE SCRATCH CARDS
+            ══════════════════════════════════════ */}
+        <section
+          id="date-reveal"
+          className="event-section event-section--brocade"
+          style={{
+            textAlign: 'center',
+            minHeight: 'auto',
+            padding: '5rem 1.5rem',
+            position: 'relative',
+          }}
+        >
+          <div className="section-border-top" />
+          <div className="section-gold-frame" />
+          <GoldenParticles count={20} />
+
+          <RevealSection>
+            <ScratchDateReveal
+              day={WEDDING_CONFIG.ceremony.dateNumber}
+              month="NOVEMBER"
+              year="2026"
+            />
+          </RevealSection>
+
+          <div className="section-border-bottom" />
+        </section>
+
+        {/* ══════════════════════════════════════
             SECTION 2: THE COUPLE
             ══════════════════════════════════════ */}
         <section
@@ -540,16 +573,16 @@ export default function WeddingExperience() {
           className="event-section event-section--maroon"
           style={{
             textAlign: 'center',
-            backgroundImage: `url(${WEDDING_CONFIG.couple.portrait})`,
+            backgroundImage: `url(${WEDDING_CONFIG.ceremony.bgImage || '/gallery/photo-2.jpg'})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          {/* Dark overlay on top of couple photo background */}
+          {/* Rich Dark silk overlay on top of sacred background */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(180deg, rgba(58,13,18,0.88) 0%, rgba(75,17,24,0.72) 40%, rgba(58,13,18,0.88) 100%)',
+            background: 'linear-gradient(180deg, rgba(58,13,18,0.92) 0%, rgba(75,17,24,0.82) 40%, rgba(58,13,18,0.92) 100%)',
             zIndex: 0,
           }} />
           <div className="section-border-top" style={{ zIndex: 1 }} />
@@ -563,11 +596,21 @@ export default function WeddingExperience() {
           </RevealSection>
 
           <RevealSection delay={0.2}>
-            <div className="couple-portrait-frame" style={{ position: 'relative', zIndex: 2 }}>
-              <img
-                src={WEDDING_CONFIG.couple.portrait}
-                alt={`${WEDDING_CONFIG.couple.groom.name} & ${WEDDING_CONFIG.couple.bride.name}`}
-              />
+            <div
+              className="couple-portrait-frame"
+              style={{
+                position: 'relative',
+                zIndex: 2,
+                maxWidth: '480px',
+                margin: '2rem auto',
+                padding: '0',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.28)',
+                border: '2px solid rgba(212, 175, 55, 0.45)',
+              }}
+            >
+              <CoupleSilhouette />
               <div className="corner-accent corner-accent--tl" />
               <div className="corner-accent corner-accent--tr" />
               <div className="corner-accent corner-accent--bl" />
@@ -716,7 +759,8 @@ export default function WeddingExperience() {
             <GoldDivider width={220} />
           </RevealSection>
 
-          <div className="timeline-container" style={{ marginTop: '3rem' }}>
+          <div className="timeline-container" style={{ marginTop: '3rem', position: 'relative' }}>
+            <TimelineAirplane timelineLength={WEDDING_CONFIG.timeline.length} />
             {WEDDING_CONFIG.timeline.map((event, i) => (
               <div key={event.year} className="timeline-event">
                 <RevealSection delay={i * 0.1}>
@@ -874,26 +918,18 @@ export default function WeddingExperience() {
         </section>
 
         {/* ══════════════════════════════════════
-            SECTION 9: FINAL BLESSING
+            SECTION 9: HEARTFELT GRATITUDE & BLESSINGS
             ══════════════════════════════════════ */}
         <section
-          className="event-section event-section--maroon"
+          className="event-section event-section--brocade"
           style={{
             textAlign: 'center',
-            minHeight: '80vh',
-            backgroundImage: `url(${WEDDING_CONFIG.couple.portrait})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            minHeight: '60vh',
+            padding: '5rem 1.5rem',
+            position: 'relative',
           }}
         >
-          {/* Dark overlay */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(180deg, rgba(58,13,18,0.92) 0%, rgba(75,17,24,0.80) 50%, rgba(58,13,18,0.92) 100%)',
-            zIndex: 0,
-          }} />
-          <div className="section-border-top" style={{ zIndex: 1 }} />
+          <div className="section-border-top" />
           <div className="section-gold-frame" />
 
           <RevealSection>
@@ -903,67 +939,94 @@ export default function WeddingExperience() {
           </RevealSection>
 
           <RevealSection delay={0.15}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              {/* Lord Murugan deity at the close */}
-              <img
-                src={WEDDING_CONFIG.blessing.image}
-                alt="Lord Murugan"
-                className="deity-portrait"
-                style={{ width: 'clamp(100px, 25vw, 180px)', marginTop: '1rem' }}
-              />
-              <p className="label-text" style={{ marginTop: '1rem' }}>
-                {WEDDING_CONFIG.blessing.blessingText}
+            <div style={{ position: 'relative', zIndex: 2, marginTop: '1.5rem' }}>
+              <p className="label-text" style={{ letterSpacing: '0.35em', marginBottom: '0.75rem' }}>
+                WITH LOVE &amp; BLESSINGS
               </p>
               <h2
-                className="font-heading"
+                className="section-title"
                 style={{
-                  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-                  fontWeight: 600,
-                  letterSpacing: '0.25em',
-                  color: 'var(--gold-bright)',
-                  marginTop: '0.5rem',
-                  marginBottom: '2rem',
-                  textShadow: '0 2px 15px rgba(184, 138, 53, 0.3)',
+                  fontSize: 'clamp(1.3rem, 3.5vw, 2.2rem)',
+                  marginBottom: '1rem',
                 }}
               >
-                {WEDDING_CONFIG.blessing.deityDisplayName}
+                HEARTFELT GRATITUDE
               </h2>
+              <GoldDivider width={220} />
             </div>
           </RevealSection>
 
           <RevealSection delay={0.3}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              <GoldDivider width={200} />
+            <div
+              style={{
+                position: 'relative',
+                zIndex: 2,
+                maxWidth: '620px',
+                margin: '2rem auto 1rem',
+                padding: '0 1rem',
+              }}
+            >
+              <p
+                className="font-accent"
+                style={{
+                  fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                  fontStyle: 'italic',
+                  color: 'var(--gold-antique)',
+                  lineHeight: 1.8,
+                  marginBottom: '1.5rem',
+                }}
+              >
+                &ldquo;Your presence, affection, and sacred blessings will illuminate our new journey together as one heart and one soul.&rdquo;
+              </p>
 
-              <h1
-                className="couple-name"
-                style={{ fontSize: 'clamp(1.5rem, 5vw, 2.8rem)', marginTop: '1.5rem' }}
-              >
-                {WEDDING_CONFIG.couple.groom.displayName}
-              </h1>
-              <div
-                className="weds-text"
-                style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', margin: '0.75rem 0' }}
-              >
-                &amp;
+              <div style={{ margin: '1.5rem 0' }}>
+                <GoldLine />
               </div>
-              <h1
-                className="couple-name"
-                style={{ fontSize: 'clamp(1.5rem, 5vw, 2.8rem)' }}
+
+              <p
+                className="label-text"
+                style={{
+                  fontSize: 'clamp(0.7rem, 1.3vw, 0.85rem)',
+                  letterSpacing: '0.28em',
+                  color: 'var(--gold-bright)',
+                }}
               >
-                {WEDDING_CONFIG.couple.bride.displayName}
-              </h1>
+                WARM REGARDS FROM BOTH FAMILIES
+              </p>
+
+              <div
+                style={{
+                  marginTop: '1.75rem',
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: 'clamp(0.85rem, 1.5vw, 1rem)',
+                  letterSpacing: '0.35em',
+                  color: 'var(--gold-shine)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                நன்றி · வாழ்க வளமுடன்
+              </div>
             </div>
           </RevealSection>
 
           <RevealSection delay={0.45}>
-            <div style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ position: 'relative', zIndex: 2, marginTop: '2rem' }}>
               <GoldDivider width={160} />
-              <p className="label-text" style={{ marginTop: '1rem' }}>
-                {WEDDING_CONFIG.ceremony.date}
+              <p
+                className="label-text"
+                style={{
+                  marginTop: '1.25rem',
+                  fontSize: 'clamp(0.6rem, 1vw, 0.7rem)',
+                  letterSpacing: '0.3em',
+                  opacity: 0.7,
+                }}
+              >
+                MADURAI · NOVEMBER 2026
               </p>
             </div>
           </RevealSection>
+
+          <div className="section-border-bottom" />
         </section>
       </main>
     </>

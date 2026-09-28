@@ -144,6 +144,7 @@ export const WEDDING_CONFIG = {
   // ─── Navigation ───────────────────────────────
   navigation: [
     { id: 'invitation', label: 'THE INVITATION' },
+    { id: 'date-reveal', label: 'DATE REVEAL' },
     { id: 'couple', label: 'THE COUPLE' },
     { id: 'wedding', label: 'THE WEDDING' },
     { id: 'reception-1', label: 'RECEPTION I' },
