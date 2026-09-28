@@ -414,7 +414,7 @@ export default function WeddingExperience() {
       {/* ═══════════════════════════════════════════
           SOUNDTRACK & NAVIGATION
           ═══════════════════════════════════════════ */}
-      <AudioExperience visible={videoFadeDone} />
+      <AudioExperience />
       {videoFadeDone && (
         <NavigationMenu />
       )}
