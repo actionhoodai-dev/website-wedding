@@ -2,112 +2,120 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-export function AudioExperience() {
+interface AudioExperienceProps {
+  autoPlayOnReveal?: boolean;
+  visible?: boolean;
+}
+
+export function AudioExperience({ autoPlayOnReveal = true, visible = true }: AudioExperienceProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize Web Audio Tanpura & Sacred Temple Chimes
-  const startSacredAudio = useCallback(() => {
-    try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const ctx = new AudioCtx();
-      audioCtxRef.current = ctx;
+  // Smooth fade-in helper
+  const fadeIn = useCallback((audio: HTMLAudioElement, targetVol = 0.65, duration = 1500) => {
+    if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+    audio.volume = 0;
+    const stepTime = 50;
+    const steps = duration / stepTime;
+    const stepVol = targetVol / steps;
 
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0.01, ctx.currentTime);
-      masterGain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 3);
-      masterGain.connect(ctx.destination);
-      gainNodeRef.current = masterGain;
-
-      // ─── Traditional Tanpura Drone (Sa, Pa, Sa', Sa) in Key of C# (approx 138.5 Hz) ───
-      // Sa (Tonic): 138.59 Hz
-      // Pa (Fifth): 207.65 Hz
-      // Tar Sa (Higher Octave): 277.18 Hz
-      const droneNotes = [
-        { freq: 207.65, type: 'sine' as OscillatorType, gain: 0.12 }, // Pa
-        { freq: 277.18, type: 'triangle' as OscillatorType, gain: 0.08 }, // Higher Sa
-        { freq: 138.59, type: 'sine' as OscillatorType, gain: 0.15 }, // Mukhya Sa
-        { freq: 69.3, type: 'sine' as OscillatorType, gain: 0.1 },  // Kharaj (Deep Sa)
-      ];
-
-      droneNotes.forEach((note, idx) => {
-        const osc = ctx.createOscillator();
-        const noteGain = ctx.createGain();
-        osc.type = note.type;
-        osc.frequency.setValueAtTime(note.freq, ctx.currentTime);
-
-        // Gentle natural pitch shimmer (vibrato/chorus)
-        const lfo = ctx.createOscillator();
-        const lfoGain = ctx.createGain();
-        lfo.frequency.setValueAtTime(0.2 + idx * 0.1, ctx.currentTime);
-        lfoGain.gain.setValueAtTime(1.2, ctx.currentTime);
-        lfo.connect(osc.frequency);
-        lfo.start();
-
-        noteGain.gain.setValueAtTime(note.gain, ctx.currentTime);
-        osc.connect(noteGain);
-        noteGain.connect(masterGain);
-        osc.start();
-      });
-
-      // ─── Periodic Auspicious Temple Bell (Mani) Chime ───
-      const playTempleBell = () => {
-        if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') return;
-        const bellCtx = audioCtxRef.current;
-        const bellOsc = bellCtx.createOscillator();
-        const bellGain = bellCtx.createGain();
-
-        // High harmonic brass temple bell frequency ~1100Hz with overtones
-        bellOsc.type = 'sine';
-        bellOsc.frequency.setValueAtTime(1108, bellCtx.currentTime);
-        bellGain.gain.setValueAtTime(0.04, bellCtx.currentTime);
-        bellGain.gain.exponentialRampToValueAtTime(0.0001, bellCtx.currentTime + 3.5);
-
-        bellOsc.connect(bellGain);
-        bellGain.connect(bellCtx.destination);
-        bellOsc.start();
-        bellOsc.stop(bellCtx.currentTime + 3.6);
-      };
-
-      // Play chime initially and every 14 seconds
-      setTimeout(playTempleBell, 2000);
-      const bellInterval = setInterval(playTempleBell, 14000);
-      timerRef.current = bellInterval;
-
-      setIsPlaying(true);
-    } catch {
-      // Audio autoplay policy handled gracefully
-    }
+    fadeIntervalRef.current = setInterval(() => {
+      if (!audioRef.current) {
+        if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+        return;
+      }
+      if (audio.volume + stepVol >= targetVol) {
+        audio.volume = targetVol;
+        if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+      } else {
+        audio.volume = Math.min(targetVol, audio.volume + stepVol);
+      }
+    }, stepTime);
   }, []);
 
-  const stopSacredAudio = useCallback(() => {
-    if (gainNodeRef.current && audioCtxRef.current) {
-      gainNodeRef.current.gain.linearRampToValueAtTime(0.001, audioCtxRef.current.currentTime + 0.8);
-      setTimeout(() => {
-        audioCtxRef.current?.close();
-        audioCtxRef.current = null;
-      }, 900);
+  const playAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setIsPlaying(true);
+          fadeIn(audio, 0.65, 1200);
+        })
+        .catch(() => {
+          // Autoplay was prevented by browser policy
+          setIsPlaying(false);
+        });
     }
-    if (timerRef.current) clearInterval(timerRef.current);
+  }, [fadeIn]);
+
+  const pauseAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+    audio.pause();
     setIsPlaying(false);
   }, []);
 
-  const toggleAudio = () => {
+  const toggleAudio = useCallback(() => {
+    setHasInteracted(true);
     if (isPlaying) {
-      stopSacredAudio();
+      pauseAudio();
     } else {
-      startSacredAudio();
+      playAudio();
     }
-  };
+  }, [isPlaying, pauseAudio, playAudio]);
 
+  // Initialize and attempt autoplay on user interaction
   useEffect(() => {
+    const audio = new Audio('/audio.mp3');
+    audio.loop = true;
+    audio.preload = 'auto';
+    audioRef.current = audio;
+
+    // Try initial play
+    if (autoPlayOnReveal) {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            fadeIn(audio, 0.65, 1500);
+          })
+          .catch(() => {
+            // Autoplay blocked — wait for first user gesture
+            const handleFirstGesture = () => {
+              if (!hasInteracted && audioRef.current) {
+                audioRef.current
+                  .play()
+                  .then(() => {
+                    setIsPlaying(true);
+                    fadeIn(audioRef.current!, 0.65, 1200);
+                  })
+                  .catch(() => {});
+              }
+              window.removeEventListener('click', handleFirstGesture);
+              window.removeEventListener('touchstart', handleFirstGesture);
+              window.removeEventListener('keydown', handleFirstGesture);
+            };
+
+            window.addEventListener('click', handleFirstGesture, { once: true });
+            window.addEventListener('touchstart', handleFirstGesture, { once: true });
+            window.addEventListener('keydown', handleFirstGesture, { once: true });
+          });
+      }
+    }
+
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (audioCtxRef.current) audioCtxRef.current.close().catch(() => {});
+      if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+      audio.pause();
+      audio.src = '';
     };
-  }, []);
+  }, [autoPlayOnReveal, fadeIn, hasInteracted]);
 
   return (
     <div
@@ -118,59 +126,87 @@ export function AudioExperience() {
         zIndex: 500,
         display: 'flex',
         alignItems: 'center',
-        gap: '0.6rem',
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? 'auto' : 'none',
+        transition: 'opacity 0.6s ease',
       }}
     >
       <button
         onClick={toggleAudio}
-        aria-label={isPlaying ? 'Mute sacred wedding audio' : 'Play sacred wedding audio'}
+        aria-label={isPlaying ? 'Pause wedding soundtrack (Aasaimugam)' : 'Play wedding soundtrack (Aasaimugam)'}
+        title={isPlaying ? 'Pause Music — Aasaimugam' : 'Play Music — Aasaimugam'}
         style={{
-          background: 'rgba(255, 249, 234, 0.88)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(184, 138, 53, 0.45)',
+          background: 'rgba(75, 17, 24, 0.88)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          border: '1px solid rgba(184, 138, 53, 0.55)',
           borderRadius: '24px',
           padding: '0.45rem 0.95rem',
           display: 'flex',
           alignItems: 'center',
           gap: '0.55rem',
           cursor: 'pointer',
-          boxShadow: isPlaying ? '0 0 18px rgba(184, 138, 53, 0.35)' : '0 2px 8px rgba(0,0,0,0.06)',
-          transition: 'all 0.3s ease',
+          boxShadow: isPlaying
+            ? '0 0 20px rgba(184, 138, 53, 0.4), inset 0 0 10px rgba(184, 138, 53, 0.15)'
+            : '0 4px 12px rgba(0, 0, 0, 0.3)',
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Equalizer animation when playing */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2.5px', height: '14px', width: '16px' }}>
-          {[1, 2, 3, 4].map((i) => (
+        {/* Animated Equalizer Wave Bars */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '2.5px',
+            height: '14px',
+            width: '16px',
+          }}
+        >
+          {[0.6, 0.9, 0.5, 0.8].map((speed, i) => (
             <span
               key={i}
               style={{
                 width: '2px',
-                background: 'var(--gold-antique, #b88a35)',
+                background: isPlaying ? 'var(--gold-bright, #d4af37)' : 'rgba(212, 175, 55, 0.5)',
                 borderRadius: '1px',
-                height: isPlaying ? `${Math.sin(i * 1.5) * 8 + 9}px` : '4px',
-                animation: isPlaying ? `equalizerPulse ${0.6 + i * 0.2}s infinite alternate ease-in-out` : 'none',
+                height: isPlaying ? '14px' : '4px',
+                animation: isPlaying ? `audioWavePulse ${speed}s infinite alternate ease-in-out` : 'none',
+                animationDelay: `${i * 0.15}s`,
+                transition: 'height 0.3s ease',
               }}
             />
           ))}
         </div>
+
+        {/* Music Label */}
         <span
           style={{
             fontFamily: 'var(--font-heading, "Cinzel", serif)',
-            fontSize: '0.7rem',
+            fontSize: '0.68rem',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: 'var(--red-deep, #7a1c1c)',
+            color: 'var(--gold-bright, #d4af37)',
             fontWeight: 600,
           }}
         >
-          {isPlaying ? 'Sacred Melody' : 'Music'}
+          {isPlaying ? 'Music' : 'Play Music'}
         </span>
       </button>
 
       <style jsx global>{`
-        @keyframes equalizerPulse {
-          0% { height: 3px; }
-          100% { height: 14px; }
+        @keyframes audioWavePulse {
+          0% {
+            height: 3px;
+            opacity: 0.6;
+          }
+          50% {
+            height: 14px;
+            opacity: 1;
+          }
+          100% {
+            height: 7px;
+            opacity: 0.8;
+          }
         }
       `}</style>
     </div>

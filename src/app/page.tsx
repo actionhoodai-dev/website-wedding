@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { WEDDING_CONFIG } from '@/config/wedding';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { AudioExperience } from '@/components/AudioExperience';
 
 /* ============================================================
    UTILITY — Countdown Hook
@@ -411,8 +412,9 @@ export default function WeddingExperience() {
       )}
 
       {/* ═══════════════════════════════════════════
-          NAVIGATION
+          SOUNDTRACK & NAVIGATION
           ═══════════════════════════════════════════ */}
+      <AudioExperience visible={videoFadeDone} />
       {videoFadeDone && (
         <NavigationMenu />
       )}
