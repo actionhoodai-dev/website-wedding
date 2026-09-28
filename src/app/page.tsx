@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { WEDDING_CONFIG } from '@/config/wedding';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { AudioExperience } from '@/components/AudioExperience';
 
 /* ============================================================
    UTILITY — Countdown Hook
@@ -412,13 +411,10 @@ export default function WeddingExperience() {
       )}
 
       {/* ═══════════════════════════════════════════
-          NAVIGATION & SACRED AUDIO
+          NAVIGATION
           ═══════════════════════════════════════════ */}
       {videoFadeDone && (
-        <>
-          <AudioExperience />
-          <NavigationMenu />
-        </>
+        <NavigationMenu />
       )}
 
       {/* ═══════════════════════════════════════════
@@ -532,19 +528,6 @@ export default function WeddingExperience() {
               </p>
             </div>
           </RevealSection>
-
-          {/* Scroll hint */}
-          {videoFadeDone && (
-            <motion.div
-              className="scroll-indicator"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              transition={{ delay: 2, duration: 1 }}
-            >
-              <span className="scroll-indicator-text">Scroll</span>
-              <div className="scroll-indicator-line" />
-            </motion.div>
-          )}
         </section>
 
         {/* ══════════════════════════════════════
