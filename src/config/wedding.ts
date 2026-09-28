@@ -25,6 +25,7 @@ export const WEDDING_CONFIG = {
     deity: 'Lord Murugan',
     deityDisplayName: 'LORD MURUGAN',
     blessingText: 'WITH THE BLESSINGS OF',
+    image: '/murugan.png',
   },
 
   // ─── Wedding Ceremony ─────────────────────────
@@ -43,6 +44,7 @@ export const WEDDING_CONFIG = {
       address: 'Meenakshi Amman Temple, Madurai, Tamil Nadu',
       mapUrl: 'https://maps.google.com/?q=Meenakshi+Amman+Temple+Madurai',
     },
+    bgImage: '/gallery/photo-2.jpg',
   },
 
   // ─── Reception Events ─────────────────────────
@@ -61,6 +63,7 @@ export const WEDDING_CONFIG = {
       city: 'GOBICHETTIPALAYAM',
       mapUrl: 'https://maps.google.com/?q=Bharathi+Mahal+Gobichettipalayam',
     },
+    bgImage: '/gallery/photo-4.jpg',
   },
 
   receptionTwo: {
@@ -78,6 +81,7 @@ export const WEDDING_CONFIG = {
       city: 'NAMAKKAL',
       mapUrl: 'https://maps.google.com/?q=Sri+Mahal+Namakkal',
     },
+    bgImage: '/gallery/photo-5.jpg',
   },
 
   // ─── RSVP ─────────────────────────────────────
@@ -85,31 +89,57 @@ export const WEDDING_CONFIG = {
     heading: 'YOUR PRESENCE IS OUR BLESSING',
     subheading: 'We would be honoured by your gracious presence',
     ctaText: 'SEND MY BLESSINGS',
-    fields: ['name', 'email', 'attending', 'guests', 'message'],
+    fields: ['name', 'email', 'attending', 'message'],
   },
 
-  // ─── Gallery Images ───────
-  gallery: [
-    { id: 1, src: '/gallery/photo-1.jpg', alt: 'Rajha Mukhilan & Swetha', layout: 'portrait' as const },
-    { id: 2, src: '/gallery/photo-2.jpg', alt: 'Traditional Muhurtham Ceremony', layout: 'landscape' as const },
-    { id: 3, src: '/gallery/photo-3.jpg', alt: 'Maalai Maatral Garland Exchange', layout: 'portrait' as const },
-    { id: 4, src: '/gallery/photo-4.jpg', alt: 'Grand Wedding Reception', layout: 'landscape' as const },
-    { id: 5, src: '/gallery/photo-5.jpg', alt: 'Sacred Temple Blessings', layout: 'portrait' as const },
-    { id: 6, src: '/gallery/photo-6.jpg', alt: 'Joyous Moments', layout: 'landscape' as const },
+  // ─── Love Story Timeline ──────────────────────
+  timeline: [
+    {
+      year: '2022',
+      title: 'FIRST MEETING IN MISSISSAUGA',
+      subtitle: 'Where Destiny Intertwined',
+      location: 'Mississauga, Canada',
+      description:
+        'Thousands of miles away from home amidst Canadian winters, serendipity brought Rajha Mukhilan and Swetha together. What started as quiet conversations blossomed into an eternal bond of soulmates.',
+      bgImage: '/gallery/photo-1.jpg',
+    },
+    {
+      year: '2023',
+      title: 'FOUR YEARS OF DEVOTION',
+      subtitle: 'A Rhythm of Two Hearts',
+      location: 'Canada & Beyond',
+      description:
+        'Through four years of shared aspirations, enduring trust, and deep conversations, their companionship grew deeper with every passing day, building an unshakeable foundation for life.',
+      bgImage: '/gallery/photo-3.jpg',
+    },
+    {
+      year: '2024',
+      title: 'BRIDGING CONTINENTS & DISTANCE',
+      subtitle: 'From Canada to Tamil Nadu',
+      location: 'Across Oceans',
+      description:
+        'Across 12,000 kilometers and multiple time zones, their love proved that distance is only geographical. Their hearts remained united, anchored in Tamil traditions and shared hopes.',
+      bgImage: '/gallery/photo-4.jpg',
+    },
+    {
+      year: '2025',
+      title: 'THE BLESSING OF FAMILIES',
+      subtitle: 'Two Lineages Unite with Joy',
+      location: 'Tamil Nadu, India',
+      description:
+        'With the blessings of parents, elders, and the grace of the Almighty, two loving families came together in celebration, joyfully arranging their sacred marriage.',
+      bgImage: '/gallery/photo-5.jpg',
+    },
+    {
+      year: '2026',
+      title: 'THE SACRED THIRUMAANGALYAM',
+      subtitle: 'United for Eternity',
+      location: 'Meenakshi Amman Temple, Madurai',
+      description:
+        'Before the divine presence of Lord Murugan and Goddess Meenakshi in Madurai, Rajha Mukhilan and Swetha take the holy seven steps, beginning their sacred journey as husband and wife.',
+      bgImage: '/gallery/photo-2.jpg',
+    },
   ],
-
-  // ─── Story ────────────────────────────────────
-  story: {
-    yearsKnown: 'FOUR YEARS',
-    connection: 'MISSISSAUGA, CANADA',
-    narrative: [
-      { label: 'TWO PEOPLE', detail: '' },
-      { label: 'FOUR YEARS', detail: '' },
-      { label: 'ONE JOURNEY', detail: '' },
-      { label: 'ACROSS DISTANCE', detail: 'Mississauga, Canada → Tamil Nadu, India' },
-      { label: 'ONE SACRED BEGINNING', detail: '' },
-    ],
-  },
 
   // ─── Navigation ───────────────────────────────
   navigation: [
@@ -118,8 +148,7 @@ export const WEDDING_CONFIG = {
     { id: 'wedding', label: 'THE WEDDING' },
     { id: 'reception-1', label: 'RECEPTION I' },
     { id: 'reception-2', label: 'RECEPTION II' },
-    { id: 'story', label: 'OUR STORY' },
-    { id: 'memories', label: 'MEMORIES' },
+    { id: 'timeline', label: 'OUR JOURNEY' },
     { id: 'rsvp', label: 'RSVP' },
   ],
 

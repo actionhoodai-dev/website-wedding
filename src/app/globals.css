@@ -6,8 +6,8 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS — LUXURY SOUTH INDIAN INVITATION
-   Deep Ceremonial Red + Antique Gold + Warm Ivory
+   DESIGN TOKENS — MAXIMALIST SOUTH INDIAN INVITATION
+   Deep Maroon + Antique Gold + Warm Cream
    ============================================ */
 :root {
   /* ─── Core Palette ─── */
@@ -15,16 +15,20 @@
   --ivory-light: #FFF9EA;
   --ivory-warm: #F5ECD7;
   --cream: #FFFDF5;
+  --cream-warm: #FAF0D8;
 
   --red-deep: #6F1720;
   --red-ceremonial: #8B1A1A;
   --maroon-dark: #4B1118;
   --maroon-deeper: #3A0D12;
+  --maroon-rich: #5C1320;
+  --maroon-surface: #2D0A0F;
 
   --gold-antique: #B88A35;
   --gold-warm: #C9973E;
   --gold-deep: #8A6B22;
   --gold-light: #D4A94E;
+  --gold-bright: #E0B44A;
   --gold-faint: rgba(184, 138, 53, 0.12);
   --gold-glow: rgba(184, 138, 53, 0.25);
 
@@ -33,8 +37,8 @@
   --brown-text: #5C4A3A;
 
   /* ─── Surfaces ─── */
-  --bg-primary: var(--ivory);
-  --bg-section: var(--ivory-light);
+  --bg-primary: var(--maroon-dark);
+  --bg-section: var(--ivory);
   --bg-card: rgba(255, 249, 234, 0.85);
   --bg-dark: var(--maroon-dark);
   --bg-dark-deep: var(--maroon-deeper);
@@ -94,18 +98,12 @@ html.lenis, html.lenis body {
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--brown-dark);
+  background: var(--maroon-deeper);
+  color: var(--ivory);
   font-family: var(--font-body);
   min-height: 100vh;
   overflow-x: hidden;
-  line-height: 1.7;
-  -webkit-tap-highlight-color: transparent;
-}
-
-::selection {
-  background: rgba(184, 138, 53, 0.25);
-  color: var(--red-deep);
+  line-height: 1.6;
 }
 
 /* ============================================
@@ -143,17 +141,9 @@ body {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--red-deep);
+  color: var(--gold-bright);
   line-height: 1.15;
-}
-
-.couple-name-gold {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold-antique);
-  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(184, 138, 53, 0.3);
 }
 
 /* ─── Section Title ─── */
@@ -162,19 +152,22 @@ body {
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--red-deep);
+  color: var(--gold-bright);
+  text-shadow: 0 2px 15px rgba(184, 138, 53, 0.25);
 }
 
-/* ─── Small Label ─── */
+/* ─── Label Text — Small Caps ─── */
 .label-text {
   font-family: var(--font-heading);
-  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-  letter-spacing: 0.4em;
+  font-size: clamp(0.55rem, 1.1vw, 0.7rem);
+  font-weight: 600;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--gold-antique);
+  text-shadow: 0 1px 8px rgba(184, 138, 53, 0.2);
 }
 
-/* ─── Weds Typography ─── */
+/* ─── Weds / & divider ─── */
 .weds-text {
   font-family: var(--font-accent);
   font-style: italic;
@@ -236,52 +229,6 @@ body {
 }
 
 /* ============================================
-   ORNAMENTAL FRAME — Temple-Inspired Border
-   ============================================ */
-.invitation-frame {
-  position: relative;
-  padding: clamp(2rem, 6vw, 4rem) clamp(1.5rem, 4vw, 3rem);
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-.invitation-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--gold-antique);
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-.invitation-frame::after {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid var(--gold-antique);
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-/* ─── Arch Frame — Rounded top ─── */
-.arch-frame {
-  position: relative;
-  border: 1px solid rgba(184, 138, 53, 0.35);
-  border-radius: clamp(80px, 20vw, 140px) clamp(80px, 20vw, 140px) 0 0;
-  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2.5rem) clamp(2rem, 5vw, 3rem);
-  background: linear-gradient(180deg, rgba(184, 138, 53, 0.04) 0%, transparent 60%);
-}
-
-.arch-frame::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border: 1px solid rgba(184, 138, 53, 0.15);
-  border-radius: calc(clamp(80px, 20vw, 140px) + 4px) calc(clamp(80px, 20vw, 140px) + 4px) 0 0;
-  pointer-events: none;
-}
-
-/* ============================================
    ORNAMENTAL DIVIDERS
    ============================================ */
 .ornament-divider {
@@ -299,7 +246,7 @@ body {
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, var(--gold-antique) 50%, transparent 100%);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .ornament-diamond {
@@ -307,15 +254,7 @@ body {
   height: 8px;
   border: 1px solid var(--gold-antique);
   transform: rotate(45deg);
-  opacity: 0.6;
-}
-
-.ornament-diamond-filled {
-  width: 6px;
-  height: 6px;
-  background: var(--gold-antique);
-  transform: rotate(45deg);
-  opacity: 0.4;
+  opacity: 0.7;
 }
 
 /* Elaborate Gold Line */
@@ -325,19 +264,11 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold-antique), transparent);
   margin: 1.5rem auto;
-  opacity: 0.4;
-}
-
-/* ─── Temple Arch Ornament (SVG-based) ─── */
-.ornament-arch {
-  width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 /* ============================================
-   EVENT SECTION — Editorial Invitation Style
+   EVENT SECTION — Maximalist Royal Style
    ============================================ */
 .event-section {
   position: relative;
@@ -350,26 +281,110 @@ body {
   overflow: hidden;
 }
 
-.event-section--ivory {
-  background: var(--bg-primary);
+/* ─── Background Variants ─── */
+.event-section--maroon {
+  background: linear-gradient(180deg, var(--maroon-dark) 0%, var(--maroon-deeper) 40%, var(--maroon-dark) 100%);
+  color: var(--ivory);
+}
+
+.event-section--brocade {
+  background: url('/brocade-bg.jpg') center/cover no-repeat;
+  color: var(--ivory);
+}
+
+.event-section--brocade::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 13, 18, 0.82);
+  z-index: 0;
+}
+
+.event-section--brocade > * {
+  position: relative;
+  z-index: 1;
 }
 
 .event-section--cream {
-  background: var(--bg-section);
+  background: url('/parchment-bg.jpg') center/cover no-repeat;
+  color: var(--brown-dark);
 }
 
-.event-section--dark {
-  background: var(--bg-dark);
+.event-section--cream::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 240, 216, 0.75);
+  z-index: 0;
+}
+
+.event-section--cream > * {
+  position: relative;
+  z-index: 1;
+}
+
+.event-section--cream .couple-name,
+.event-section--cream .section-title {
+  color: var(--red-deep);
+  text-shadow: none;
+}
+
+.event-section--cream .label-text {
+  color: var(--gold-deep);
+  text-shadow: none;
+}
+
+.event-section--cream .ornament-line {
+  background: linear-gradient(90deg, transparent 0%, var(--gold-deep) 50%, transparent 100%);
+}
+
+/* ─── Photo Background Event Section ─── */
+.event-section--photo {
+  background-size: cover;
+  background-position: center;
   color: var(--ivory);
 }
 
-.event-section--dark .section-title,
-.event-section--dark .couple-name {
+.event-section--photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(58, 13, 18, 0.88) 0%,
+    rgba(75, 17, 24, 0.75) 30%,
+    rgba(58, 13, 18, 0.85) 70%,
+    rgba(45, 10, 15, 0.92) 100%);
+  z-index: 0;
+}
+
+.event-section--photo > * {
+  position: relative;
+  z-index: 1;
+}
+
+.event-section--photo .event-date-number {
+  color: var(--gold-bright);
+  text-shadow: 0 4px 30px rgba(184, 138, 53, 0.4);
+}
+
+.event-section--photo .event-month-year {
   color: var(--ivory);
 }
 
-.event-section--dark .label-text {
-  color: var(--gold-light);
+.event-section--photo .event-day {
+  color: rgba(255, 249, 234, 0.7);
+}
+
+.event-section--photo .event-time {
+  color: var(--ivory);
+}
+
+.event-section--photo .event-venue-name {
+  color: var(--gold-bright);
+}
+
+.event-section--photo .event-venue-address {
+  color: rgba(255, 249, 234, 0.75);
 }
 
 /* ─── Event Date — Dominant Number ─── */
@@ -378,8 +393,9 @@ body {
   font-size: clamp(5rem, 18vw, 10rem);
   font-weight: 400;
   line-height: 0.85;
-  color: var(--red-deep);
+  color: var(--gold-bright);
   letter-spacing: 0.05em;
+  text-shadow: 0 4px 30px rgba(184, 138, 53, 0.35);
 }
 
 .event-month-year {
@@ -387,7 +403,7 @@ body {
   font-size: clamp(0.85rem, 2vw, 1.1rem);
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--gold-antique);
   margin-top: 0.5rem;
 }
 
@@ -396,7 +412,7 @@ body {
   font-size: clamp(0.65rem, 1.3vw, 0.8rem);
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: var(--brown-text);
+  color: rgba(255, 249, 234, 0.6);
   margin-top: 0.75rem;
 }
 
@@ -404,7 +420,7 @@ body {
   font-family: var(--font-body);
   font-size: clamp(0.9rem, 1.8vw, 1.1rem);
   letter-spacing: 0.12em;
-  color: var(--brown-dark);
+  color: var(--ivory);
   margin-top: 1rem;
 }
 
@@ -414,7 +430,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--red-deep);
+  color: var(--gold-bright);
   margin-top: 1.5rem;
 }
 
@@ -422,7 +438,7 @@ body {
   font-family: var(--font-accent);
   font-size: clamp(0.8rem, 1.4vw, 0.95rem);
   letter-spacing: 0.1em;
-  color: var(--brown-text);
+  color: rgba(255, 249, 234, 0.65);
   font-style: italic;
   margin-top: 0.35rem;
 }
@@ -442,22 +458,23 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  background: rgba(255, 249, 234, 0.85);
+  background: rgba(75, 17, 24, 0.85);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(184, 138, 53, 0.3);
+  border: 1px solid rgba(184, 138, 53, 0.4);
   cursor: pointer;
   transition: all 0.4s var(--ease-silk);
 }
 
 .nav-menu-btn:hover {
   border-color: var(--gold-antique);
+  background: rgba(75, 17, 24, 0.95);
 }
 
 .nav-menu-btn span {
   display: block;
   width: 18px;
   height: 1px;
-  background: var(--red-deep);
+  background: var(--gold-antique);
   transition: all 0.4s var(--ease-silk);
 }
 
@@ -478,8 +495,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 400;
-  background: rgba(255, 249, 234, 0.97);
-  backdrop-filter: blur(20px);
+  background: url('/brocade-bg.jpg') center/cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -488,6 +504,14 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.6s var(--ease-silk);
+}
+
+.nav-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 13, 18, 0.92);
+  backdrop-filter: blur(20px);
 }
 
 .nav-overlay.open {
@@ -501,15 +525,17 @@ body {
   font-weight: 500;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--red-deep);
+  color: var(--gold-antique);
   text-decoration: none;
   padding: 0.85rem 2rem;
   transition: all 0.4s var(--ease-silk);
   position: relative;
+  z-index: 1;
 }
 
 .nav-overlay a:hover {
-  color: var(--gold-antique);
+  color: var(--gold-bright);
+  text-shadow: 0 0 15px rgba(184, 138, 53, 0.4);
 }
 
 .nav-overlay a::after {
@@ -536,8 +562,8 @@ body {
   padding: 0.85rem 1rem;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(184, 138, 53, 0.35);
-  color: var(--brown-dark);
+  border-bottom: 1px solid rgba(184, 138, 53, 0.4);
+  color: var(--ivory);
   font-family: var(--font-body);
   font-size: 1.05rem;
   letter-spacing: 0.03em;
@@ -548,21 +574,25 @@ body {
 }
 
 .rsvp-input:focus {
-  border-bottom-color: var(--gold-antique);
+  border-bottom-color: var(--gold-bright);
 }
 
 .rsvp-input::placeholder {
-  color: var(--brown-text);
+  color: rgba(255, 249, 234, 0.45);
   font-style: italic;
-  opacity: 0.6;
+}
+
+.rsvp-input option {
+  background: var(--maroon-dark);
+  color: var(--ivory);
 }
 
 .rsvp-button {
   padding: 1rem 3rem;
-  background: var(--red-deep);
-  color: var(--ivory-light);
+  background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-antique) 50%, var(--gold-deep) 100%);
+  color: var(--maroon-deeper);
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -577,7 +607,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(184, 138, 53, 0.15) 50%, transparent 100%);
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
   transform: translateX(-100%);
   transition: transform 0.6s var(--ease-silk);
 }
@@ -587,92 +617,8 @@ body {
 }
 
 .rsvp-button:hover {
-  background: var(--maroon-dark);
-  border-color: var(--gold-warm);
-}
-
-/* ============================================
-   GALLERY — Editorial Layout
-   ============================================ */
-.gallery-grid {
-  display: grid;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 var(--content-padding);
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  border: 1px solid rgba(184, 138, 53, 0.2);
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-silk);
-}
-
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-
-.gallery-item-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(75, 17, 24, 0.5) 100%);
-  opacity: 0;
-  transition: opacity 0.5s var(--ease-silk);
-}
-
-.gallery-item:hover .gallery-item-overlay {
-  opacity: 1;
-}
-
-/* ─── Fullscreen Gallery Viewer ─── */
-.gallery-viewer {
-  position: fixed;
-  inset: 0;
-  z-index: 600;
-  background: rgba(45, 33, 27, 0.95);
-  backdrop-filter: blur(20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.gallery-viewer img {
-  max-width: 92vw;
-  max-height: 88vh;
-  object-fit: contain;
-  border: 2px solid rgba(184, 138, 53, 0.3);
-}
-
-.gallery-viewer-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: 1px solid rgba(184, 138, 53, 0.4);
-  color: var(--ivory);
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: border-color 0.3s;
-}
-
-.gallery-viewer-close:hover {
-  border-color: var(--gold-antique);
+  background: linear-gradient(135deg, var(--gold-antique) 0%, var(--gold-bright) 50%, var(--gold-antique) 100%);
+  box-shadow: 0 0 30px rgba(184, 138, 53, 0.4);
 }
 
 /* ============================================
@@ -697,7 +643,7 @@ body {
   font-size: 0.6rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--gold-antique);
 }
 
 .scroll-indicator-line {
@@ -725,8 +671,8 @@ body {
   display: inline-block;
   margin-top: 1.5rem;
   padding: 0.6rem 1.8rem;
-  border: 1px solid rgba(184, 138, 53, 0.4);
-  color: var(--gold-deep);
+  border: 1px solid rgba(184, 138, 53, 0.5);
+  color: var(--gold-antique);
   font-family: var(--font-heading);
   font-size: 0.65rem;
   letter-spacing: 0.35em;
@@ -736,9 +682,10 @@ body {
 }
 
 .map-link:hover {
-  border-color: var(--gold-antique);
-  color: var(--red-deep);
-  background: rgba(184, 138, 53, 0.06);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  background: rgba(184, 138, 53, 0.12);
+  box-shadow: 0 0 20px rgba(184, 138, 53, 0.2);
 }
 
 /* ============================================
@@ -749,6 +696,9 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 0.75rem 1rem;
+  background: rgba(184, 138, 53, 0.08);
+  border: 1px solid rgba(184, 138, 53, 0.2);
+  min-width: 80px;
 }
 
 .countdown-value {
@@ -756,8 +706,9 @@ body {
   font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: var(--red-deep);
+  color: var(--gold-bright);
   line-height: 1;
+  text-shadow: 0 2px 15px rgba(184, 138, 53, 0.3);
 }
 
 .countdown-label {
@@ -766,30 +717,136 @@ body {
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--gold-deep);
+  color: var(--gold-antique);
   margin-top: 0.5rem;
 }
 
 /* ============================================
-   STORY SECTION
+   TIMELINE — Love Journey Section
    ============================================ */
-.story-word {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 5rem);
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  color: var(--red-deep);
-  text-transform: uppercase;
-  line-height: 1.1;
+.timeline-container {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 0;
 }
 
-.story-detail {
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--gold-antique), var(--gold-antique), transparent);
+  opacity: 0.4;
+  transform: translateX(-50%);
+}
+
+.timeline-event {
+  position: relative;
+  margin-bottom: clamp(3rem, 8vw, 5rem);
+  text-align: center;
+}
+
+.timeline-year {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 400;
+  color: var(--gold-bright);
+  line-height: 1;
+  text-shadow: 0 4px 25px rgba(184, 138, 53, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-dot {
+  width: 14px;
+  height: 14px;
+  background: var(--gold-antique);
+  border: 2px solid var(--maroon-dark);
+  border-radius: 50%;
+  margin: 1rem auto;
+  box-shadow: 0 0 15px rgba(184, 138, 53, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(184, 138, 53, 0.3);
+  padding: clamp(2rem, 5vw, 3rem);
+  overflow: hidden;
+}
+
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(58, 13, 18, 0.92) 0%,
+    rgba(75, 17, 24, 0.85) 50%,
+    rgba(58, 13, 18, 0.92) 100%);
+  z-index: 0;
+}
+
+.timeline-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-title {
+  font-family: var(--font-heading);
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 0.25rem;
+}
+
+.timeline-subtitle {
   font-family: var(--font-accent);
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
   font-style: italic;
+  color: var(--gold-antique);
   letter-spacing: 0.08em;
-  color: var(--gold-deep);
-  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-location {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255, 249, 234, 0.5);
+  margin-bottom: 1rem;
+}
+
+.timeline-description {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  color: rgba(255, 249, 234, 0.8);
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   LORD MURUGAN DEITY PORTRAIT
+   ============================================ */
+.deity-portrait {
+  width: clamp(140px, 35vw, 240px);
+  height: auto;
+  margin: 0 auto 1.5rem;
+  display: block;
+  filter: drop-shadow(0 0 30px rgba(184, 138, 53, 0.4));
+  animation: deityGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes deityGlow {
+  0% { filter: drop-shadow(0 0 20px rgba(184, 138, 53, 0.3)); }
+  100% { filter: drop-shadow(0 0 40px rgba(184, 138, 53, 0.55)); }
 }
 
 /* ============================================
@@ -798,21 +855,93 @@ body {
 .section-border-top {
   position: absolute;
   top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold-antique), transparent);
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 .section-border-bottom {
   position: absolute;
   bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold-antique), transparent);
-  opacity: 0.3;
+  opacity: 0.4;
+}
+
+/* ─── Double Gold Border Frame ─── */
+.section-gold-frame {
+  position: absolute;
+  inset: clamp(8px, 1.5vw, 16px);
+  border: 1px solid rgba(184, 138, 53, 0.15);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-gold-frame::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(184, 138, 53, 0.08);
+}
+
+/* ============================================
+   COUPLE PORTRAIT — Gold Frame
+   ============================================ */
+.couple-portrait-frame {
+  position: relative;
+  width: clamp(200px, 55vw, 320px);
+  height: clamp(260px, 70vw, 420px);
+  margin: 2rem auto;
+  overflow: hidden;
+  border: 3px solid var(--gold-antique);
+  box-shadow:
+    0 0 30px rgba(184, 138, 53, 0.3),
+    inset 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.couple-portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Gold corner accents */
+.corner-accent {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+}
+
+.corner-accent--tl {
+  top: -1px;
+  left: -1px;
+  border-top: 3px solid var(--gold-bright);
+  border-left: 3px solid var(--gold-bright);
+}
+
+.corner-accent--tr {
+  top: -1px;
+  right: -1px;
+  border-top: 3px solid var(--gold-bright);
+  border-right: 3px solid var(--gold-bright);
+}
+
+.corner-accent--bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 3px solid var(--gold-bright);
+  border-left: 3px solid var(--gold-bright);
+}
+
+.corner-accent--br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 3px solid var(--gold-bright);
+  border-right: 3px solid var(--gold-bright);
 }
 
 /* ============================================
@@ -844,6 +973,10 @@ body {
     font-size: 0.85rem;
     padding: 0.7rem 1.5rem;
   }
+
+  .timeline-container::before {
+    display: none;
+  }
 }
 
 /* Tablet & Desktop Enhancement */
@@ -852,18 +985,8 @@ body {
     min-height: 100vh;
   }
 
-  .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .invitation-frame {
-    max-width: 600px;
-    padding: 4rem 3.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .gallery-grid {
-    max-width: 1100px;
+  .countdown-unit {
+    min-width: 100px;
+    padding: 1rem 1.5rem;
   }
 }
