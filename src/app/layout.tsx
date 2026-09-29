@@ -3,11 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rajha-swetha-wedding.com'),
-  title: "Rajha Mukhilan & Swetha — South Indian Wedding Invitation",
+  title: "Rajha Mukilan & Swetha — South Indian Wedding Invitation",
   description:
-    "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukhilan & Swetha at Madurai Meenakshi Amman Temple.",
+    "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukilan & Swetha at Madurai Meenakshi Amman Temple.",
   openGraph: {
-    title: "Rajha Mukhilan & Swetha — Wedding Invitation",
+    title: "Rajha Mukilan & Swetha — Wedding Invitation",
     description: "A cinematic South Indian wedding invitation experience",
     images: ["/couple/portrait.jpg"],
   },

@@ -11,7 +11,7 @@ import { CeremonialGallery } from '@/components/CeremonialGallery';
 import { GoldenParticles } from '@/components/GoldenParticles';
 
 const GALLERY_ITEMS = [
-  { id: 1, src: '/couple/temple-view.jpg', alt: 'Rajha Mukhilan & Swetha at Meenakshi Amman Temple' },
+  { id: 1, src: '/couple/temple-view.jpg', alt: 'Rajha Mukilan & Swetha at Meenakshi Amman Temple' },
   { id: 2, src: '/gallery/photo-2.jpg', alt: 'Sacred Temple Architecture & Heritage' },
   { id: 3, src: '/couple/portrait.jpg', alt: 'Cherished Portrait of Love' },
   { id: 4, src: '/gallery/photo-4.jpg', alt: 'Festive Floral Wedding Decor' },

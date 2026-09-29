@@ -10,8 +10,8 @@ export const WEDDING_CONFIG = {
   // ─── Couple Details ───────────────────────────
   couple: {
     groom: {
-      name: 'Rajha Mukhilan',
-      displayName: 'RAJHA MUKHILAN',
+      name: 'Rajha Mukilan',
+      displayName: 'RAJHA MUKILAN',
     },
     bride: {
       name: 'Swetha',
@@ -100,7 +100,7 @@ export const WEDDING_CONFIG = {
       subtitle: 'Where Destiny Intertwined',
       location: 'Mississauga, Canada',
       description:
-        'Thousands of miles away from home amidst Canadian winters, serendipity brought Rajha Mukhilan and Swetha together. What started as quiet conversations blossomed into an eternal bond of soulmates.',
+        'Thousands of miles away from home amidst Canadian winters, serendipity brought Rajha Mukilan and Swetha together. What started as quiet conversations blossomed into an eternal bond of soulmates.',
       bgImage: '/gallery/photo-1.jpg',
     },
     {
@@ -136,7 +136,7 @@ export const WEDDING_CONFIG = {
       subtitle: 'United for Eternity',
       location: 'Meenakshi Amman Temple, Madurai',
       description:
-        'Before the divine presence of Lord Murugan and Goddess Meenakshi in Madurai, Rajha Mukhilan and Swetha take the holy seven steps, beginning their sacred journey as husband and wife.',
+        'Before the divine presence of Lord Murugan and Goddess Meenakshi in Madurai, Rajha Mukilan and Swetha take the holy seven steps, beginning their sacred journey as husband and wife.',
       bgImage: '/gallery/photo-2.jpg',
     },
   ],
@@ -173,9 +173,9 @@ export const WEDDING_CONFIG = {
 
   // ─── Meta / SEO ───────────────────────────────
   meta: {
-    title: 'Rajha Mukhilan & Swetha — South Indian Wedding Invitation',
+    title: 'Rajha Mukilan & Swetha — South Indian Wedding Invitation',
     description:
-      'You are cordially invited to celebrate the union of Rajha Mukhilan and Swetha. With the blessings of Lord Murugan.',
+      'You are cordially invited to celebrate the union of Rajha Mukilan and Swetha. With the blessings of Lord Murugan.',
     ogImage: '/couple/portrait.jpg',
   },
 } as const;
