@@ -1,14 +1,40 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const getBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'https://rajha-swetha-wedding.com';
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://rajha-swetha-wedding.com'),
-  title: "Rajha Mukilan & Swetha — South Indian Wedding Invitation",
+  metadataBase: new URL(getBaseUrl()),
+  title: "Rajha Mukilan & Swetha — Wedding Invitation",
   description:
     "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukilan & Swetha at Madurai Meenakshi Amman Temple.",
   openGraph: {
     title: "Rajha Mukilan & Swetha — Wedding Invitation",
-    description: "A cinematic South Indian wedding invitation experience",
+    description:
+      "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukilan & Swetha at Madurai Meenakshi Amman Temple.",
+    url: "/",
+    siteName: "Rajha Mukilan & Swetha Wedding Invitation",
+    images: [
+      {
+        url: "/couple/portrait.jpg",
+        width: 896,
+        height: 1200,
+        alt: "Rajha Mukilan & Swetha — Wedding Invitation",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rajha Mukilan & Swetha — Wedding Invitation",
+    description:
+      "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukilan & Swetha at Madurai Meenakshi Amman Temple.",
     images: ["/couple/portrait.jpg"],
   },
 };

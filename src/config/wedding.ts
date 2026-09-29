@@ -96,48 +96,32 @@ export const WEDDING_CONFIG = {
   timeline: [
     {
       year: '2022',
-      title: 'FIRST MEETING IN MISSISSAUGA',
-      subtitle: 'Where Destiny Intertwined',
-      location: 'Mississauga, Canada',
-      description:
-        'Thousands of miles away from home amidst Canadian winters, serendipity brought Rajha Mukilan and Swetha together. What started as quiet conversations blossomed into an eternal bond of soulmates.',
-      bgImage: '/gallery/photo-1.jpg',
+      title: 'The First Hello',
+      description: 'Where a simple meeting marked the beginning of something beautiful.',
     },
     {
       year: '2023',
-      title: 'FOUR YEARS OF DEVOTION',
-      subtitle: 'A Rhythm of Two Hearts',
-      location: 'Canada & Beyond',
+      title: 'Little Moments, Big Memories',
       description:
-        'Through four years of shared aspirations, enduring trust, and deep conversations, their companionship grew deeper with every passing day, building an unshakeable foundation for life.',
-      bgImage: '/gallery/photo-3.jpg',
+        'Between studies and dreams of the future, we found joy in the little moments, creating memories that brought us closer.',
     },
     {
       year: '2024',
-      title: 'BRIDGING CONTINENTS & DISTANCE',
-      subtitle: 'From Canada to Tamil Nadu',
-      location: 'Across Oceans',
+      title: 'Building Our Dreams',
       description:
-        'Across 12,000 kilometers and multiple time zones, their love proved that distance is only geographical. Their hearts remained united, anchored in Tamil traditions and shared hopes.',
-      bgImage: '/gallery/photo-4.jpg',
+        'As our careers began, so did a beautiful chapter of growing and standing by each other.',
     },
     {
       year: '2025',
-      title: 'THE BLESSING OF FAMILIES',
-      subtitle: 'Two Lineages Unite with Joy',
-      location: 'Tamil Nadu, India',
+      title: 'Love Finds Its Way',
       description:
-        'With the blessings of parents, elders, and the grace of the Almighty, two loving families came together in celebration, joyfully arranging their sacred marriage.',
-      bgImage: '/gallery/photo-5.jpg',
+        "Our bond blossomed into forever, with our families' blessings and a promise to walk life together.",
     },
     {
       year: '2026',
-      title: 'THE SACRED THIRUMAANGALYAM',
-      subtitle: 'United for Eternity',
-      location: 'Meenakshi Amman Temple, Madurai',
+      title: 'Our Forever Begins',
       description:
-        'Before the divine presence of Lord Murugan and Goddess Meenakshi in Madurai, Rajha Mukilan and Swetha take the holy seven steps, beginning their sacred journey as husband and wife.',
-      bgImage: '/gallery/photo-2.jpg',
+        'From friends to fiancés, now stepping into a lifetime of love, laughter, and togetherness',
     },
   ],
 
@@ -167,8 +151,6 @@ export const WEDDING_CONFIG = {
     { id: 'wedding', label: 'THE WEDDING' },
     { id: 'reception-1', label: 'RECEPTION I' },
     { id: 'reception-2', label: 'RECEPTION II' },
-    { id: 'gallery', label: 'MEMORIES' },
-    { id: 'rsvp', label: 'RSVP' },
   ],
 
   // ─── Meta / SEO ───────────────────────────────

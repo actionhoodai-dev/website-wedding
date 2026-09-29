@@ -342,47 +342,65 @@ export function PhysicalScratchCard({ onRevealed }: PhysicalScratchCardProps) {
               fontWeight: 400,
             }}
           >
-            Four Years to Forever
+            Friends to forever
           </h3>
 
           <p
             style={{
               fontFamily: 'var(--font-poppins, sans-serif)',
               fontSize: 'clamp(0.75rem, 1.9vw, 0.88rem)',
-              fontWeight: 500,
+              fontWeight: 600,
               color: '#7a4e1d',
-              letterSpacing: '0.15em',
+              letterSpacing: '0.22em',
               textTransform: 'uppercase',
               margin: '0.25rem 0 0.5rem',
             }}
           >
-            From Mississauga, Canada → Madurai, India
+            MUHURTHAM
           </p>
 
           <div
             style={{
               display: 'inline-flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              gap: '0.75rem',
+              justifyContent: 'center',
               background: 'linear-gradient(135deg, rgba(184, 138, 53, 0.15) 0%, rgba(212, 175, 55, 0.25) 100%)',
               border: '1px solid rgba(184, 138, 53, 0.45)',
-              borderRadius: '30px',
+              borderRadius: '20px',
               padding: '0.45rem 1.4rem',
-              marginTop: '0.4rem',
+              marginTop: '0.35rem',
             }}
           >
-            <span style={{ fontSize: '1.1rem' }}>🪔</span>
-            <span
+            <div
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.45rem',
                 fontFamily: 'var(--font-poppins, sans-serif)',
                 fontWeight: 700,
                 fontSize: 'clamp(0.85rem, 2.2vw, 1.05rem)',
                 color: '#4b1118',
                 letterSpacing: '0.12em',
+                whiteSpace: 'nowrap',
               }}
             >
-              11 NOVEMBER 2026 · 09:00 AM
-            </span>
+              <span style={{ fontSize: '1.05rem' }}>🪔</span>
+              <span>11 NOVEMBER 2026</span>
+            </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-poppins, sans-serif)',
+                fontWeight: 600,
+                fontSize: 'clamp(0.78rem, 1.9vw, 0.92rem)',
+                color: '#7a4e1d',
+                letterSpacing: '0.15em',
+                whiteSpace: 'nowrap',
+                marginTop: '0.15rem',
+              }}
+            >
+              09:00 AM
+            </div>
           </div>
         </motion.div>
       </div>
