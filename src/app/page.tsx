@@ -227,7 +227,9 @@ function EventChapter({
         <GoldLine />
         <div className="event-venue-name">{venueName}</div>
         <div className="event-venue-address">{venueAddress}</div>
-        <div className="event-venue-address">{venueCity}</div>
+        {venueCity && !venueAddress.toLowerCase().includes(venueCity.toLowerCase()) && (
+          <div className="event-venue-address">{venueCity}</div>
+        )}
         {mapUrl && (
           <a
             href={mapUrl}
@@ -636,9 +638,9 @@ export default function WeddingExperience() {
           className="event-section event-section--wedding"
           style={{
             textAlign: 'center',
-            backgroundImage: `url(${WEDDING_CONFIG.ceremony.bgImage || '/gallery/photo-2.jpg'})`,
+            backgroundImage: `url(${WEDDING_CONFIG.ceremony.bgImage || '/meenakshi-thirukalyanam.jpg'})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: 'center top',
           }}
         >
           <div className="section-border-top" style={{ zIndex: 1 }} />

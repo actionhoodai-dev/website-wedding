@@ -41,10 +41,10 @@ export const WEDDING_CONFIG = {
     venue: {
       name: 'MEENAKSHI AMMAN TEMPLE',
       city: 'MADURAI',
-      address: 'Meenakshi Amman Temple, Madurai, Tamil Nadu',
+      address: 'Madurai, Tamil Nadu',
       mapUrl: 'https://maps.google.com/?q=Meenakshi+Amman+Temple+Madurai',
     },
-    bgImage: '/gallery/photo-2.jpg',
+    bgImage: '/meenakshi-thirukalyanam.jpg',
   },
 
   // ─── Reception Events ─────────────────────────
@@ -158,7 +158,7 @@ export const WEDDING_CONFIG = {
     title: 'Rajha Mukilan & Swetha — South Indian Wedding Invitation',
     description:
       'You are cordially invited to celebrate the union of Rajha Mukilan and Swetha. With the blessings of Lord Murugan.',
-    ogImage: '/couple/portrait.jpg',
+    ogImage: '/og-image.jpg',
   },
 } as const;
 

@@ -21,10 +21,10 @@ export const metadata: Metadata = {
     siteName: "Rajha Mukilan & Swetha Wedding Invitation",
     images: [
       {
-        url: "/couple/portrait.jpg",
-        width: 896,
-        height: 1200,
-        alt: "Rajha Mukilan & Swetha — Wedding Invitation",
+        url: "/og-image.jpg",
+        width: 1024,
+        height: 576,
+        alt: "Rajha Mukilan & Swetha — Sacred Wedding Muhurtham",
       },
     ],
     locale: "en_IN",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "Rajha Mukilan & Swetha — Wedding Invitation",
     description:
       "With the divine blessings of Lord Murugan, we cordially invite you to celebrate the wedding ceremony of Rajha Mukilan & Swetha at Madurai Meenakshi Amman Temple.",
-    images: ["/couple/portrait.jpg"],
+    images: ["/og-image.jpg"],
   },
 };
 

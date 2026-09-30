@@ -382,6 +382,13 @@ body {
   z-index: 0;
 }
 
+#couple.event-section--wedding::before {
+  background: linear-gradient(180deg,
+    rgba(38, 8, 12, 0.86) 0%,
+    rgba(48, 10, 15, 0.62) 45%,
+    rgba(38, 8, 12, 0.90) 100%);
+}
+
 .event-section--wedding > * {
   position: relative;
   z-index: 1;
